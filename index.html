@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBS Automation – Daily Status Dashboard June 2026</title>
+<style>
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d3f;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8eaf6;--text2:#8b92a8;--text3:#4e5567;--accent:#5b8dee;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--teal:#14b8a6;--purple:#a855f7;--cyan:#06b6d4;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;min-height:100vh;}
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:200;}
+.brand{padding:13px 0;font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.brand em{color:var(--accent);font-style:normal;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.date-badge{background:rgba(91,141,238,0.12);border:1px solid rgba(91,141,238,0.25);color:var(--accent);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+.save-indicator{font-size:11px;color:var(--green);opacity:0;transition:opacity .4s;}
+.save-indicator.show{opacity:1;}
+.btn{padding:6px 14px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.btn:hover{background:var(--bg3);color:var(--text);}
+.btn-primary{background:rgba(91,141,238,0.15);border-color:rgba(91,141,238,0.35);color:var(--accent);}
+.btn-primary:hover{background:rgba(91,141,238,0.25);}
+.btn-danger{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);color:#fca5a5;}
+.btn-danger:hover{background:rgba(239,68,68,0.2);}
+/* TABS */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 16px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2);font-size:12px;font-weight:500;white-space:nowrap;user-select:none;transition:all .15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+/* PANES */
+.pane{display:none;padding:20px;}
+.pane.active{display:block;}
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .15s,transform .15s,background .15s;}
+.stat-card.clickable{cursor:pointer;}
+.stat-card.clickable:hover{border-color:rgba(91,141,238,0.4);transform:translateY(-2px);background:rgba(91,141,238,0.05);}
+.stat-card .slabel{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.stat-card .sval{font-size:26px;font-weight:700;line-height:1;}
+.stat-card .ssub{font-size:10px;color:var(--text2);margin-top:4px;}
+.stat-card .click-hint{font-size:10px;color:var(--accent);margin-top:4px;display:none;}
+.stat-card.clickable:hover .click-hint{display:block;}
+.stat-card.clickable:hover .ssub{display:none;}
+/* CHARTS */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.chart-card h3{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;}
+@media(max-width:800px){.chart-row{grid-template-columns:1fr;}}
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.filter-bar input,.filter-bar select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:7px 11px;border-radius:7px;font-size:12px;outline:none;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent);}
+.filter-bar input{width:220px;}
+.flabel{font-size:11px;color:var(--text2);}
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg3);}
+th{padding:9px 11px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.015);}
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap;}
+.b-fprod{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.25);}
+.b-sprod{background:rgba(20,184,166,0.15);color:#5eead4;border:1px solid rgba(20,184,166,0.25);}
+.b-uat{background:rgba(91,141,238,0.15);color:#93b4f7;border:1px solid rgba(91,141,238,0.25);}
+.b-dev{background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.25);}
+.b-design{background:rgba(6,182,212,0.15);color:#67e8f9;border:1px solid rgba(6,182,212,0.25);}
+.b-req{background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);}
+.b-hold{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);}
+.b-wm{background:rgba(249,115,22,0.15);color:#fdba74;border:1px solid rgba(249,115,22,0.25);}
+.b-other{background:rgba(139,146,168,0.12);color:var(--text2);border:1px solid var(--border2);}
+.b-open{background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);}
+.b-completed{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.25);}
+.b-closed{background:rgba(139,146,168,0.12);color:var(--text2);border:1px solid var(--border2);}
+.b-success{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.2);}
+.b-fail{background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);}
+/* EDIT STYLES */
+.edit-cell{position:relative;}
+.inline-edit{background:var(--bg4);border:1px solid var(--accent);color:var(--text);padding:4px 8px;border-radius:5px;font-size:12px;width:100%;outline:none;font-family:inherit;}
+.inline-edit:focus{border-color:#7ca8f7;box-shadow:0 0 0 2px rgba(91,141,238,0.15);}
+textarea.inline-edit{resize:vertical;min-height:60px;line-height:1.45;}
+.edit-actions{display:flex;gap:4px;margin-top:4px;}
+.ea-btn{padding:3px 10px;border-radius:4px;border:none;font-size:11px;cursor:pointer;font-family:inherit;}
+.ea-save{background:var(--accent);color:#fff;}
+.ea-cancel{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
+.edit-trigger{cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;}
+.edit-trigger:hover{background:rgba(91,141,238,0.12);}
+/* ADD ROW */
+.add-row-btn{display:flex;align-items:center;gap:6px;padding:10px 14px;color:var(--accent);font-size:12px;cursor:pointer;border-top:1px dashed var(--border2);background:rgba(91,141,238,0.03);}
+.add-row-btn:hover{background:rgba(91,141,238,0.08);}
+/* ATTENDANCE */
+.att-wrap{overflow-x:auto;}
+.att-table{border-collapse:collapse;min-width:900px;}
+.att-table th{padding:8px 9px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);background:var(--bg3);border:1px solid var(--border);white-space:nowrap;}
+.att-table td{padding:6px 9px;border:1px solid var(--border);text-align:center;font-size:11px;white-space:nowrap;cursor:pointer;}
+.att-table td:first-child{text-align:left;font-weight:600;color:var(--text);background:var(--bg2);position:sticky;left:0;cursor:default;}
+.att-yes{background:rgba(34,197,94,0.1);color:#4ade80;}
+.att-leave{background:rgba(245,158,11,0.1);color:#fcd34d;}
+.att-ml{background:rgba(249,115,22,0.1);color:#fdba74;}
+.att-unavail{background:rgba(239,68,68,0.1);color:#fca5a5;}
+.att-empty{color:var(--text3);}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:300;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:min(640px,92vw);max-height:88vh;overflow-y:auto;padding:24px;position:relative;}
+.modal h2{font-size:16px;margin-bottom:4px;}
+.modal-close{position:absolute;top:14px;right:18px;cursor:pointer;color:var(--text2);font-size:20px;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.mrow{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.mkv{background:var(--bg3);border-radius:6px;padding:7px 12px;min-width:110px;}
+.mkv .k{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+.mkv .v{font-size:13px;font-weight:600;color:var(--text);}
+.mcomment{background:var(--bg3);border-radius:8px;padding:14px;font-size:12px;color:var(--text2);line-height:1.65;white-space:pre-wrap;margin-top:4px;}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+/* CONFIRM DIALOG */
+.confirm-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;max-width:360px;text-align:center;}
+.confirm-box p{margin-bottom:16px;color:var(--text2);line-height:1.5;}
+.confirm-box .cbname{font-weight:700;color:var(--text);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">GBS <em>Automation</em> Hub</div>
+  <div class="topbar-right">
+    <span class="save-indicator" id="saveInd">✓ Saved</span>
+    <button class="btn" onclick="resetToDefaults()">↺ Reset</button>
+    <button class="btn btn-primary" onclick="exportJSON()">⬇ Export JSON</button>
+    <div class="date-badge">June 2026</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="overview">📊 Overview</div>
+  <div class="tab" data-tab="projects">🤖 Projects</div>
+  <div class="tab" data-tab="attendance">👥 Attendance</div>
+  <div class="tab" data-tab="renewal">🔐 Renewals</div>
+  <div class="tab" data-tab="patch">🔧 Patch Schedule</div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="pane active" id="pane-overview">
+  <div class="stat-row" id="ov-stats"></div>
+  <div class="chart-row">
+    <div class="chart-card"><h3>Projects by Phase</h3><div style="position:relative;height:250px"><canvas id="ch-phase" role="img" aria-label="Projects by phase"></canvas></div></div>
+    <div class="chart-card"><h3>Projects by Champion</h3><div style="position:relative;height:250px"><canvas id="ch-champ" role="img" aria-label="Projects by champion"></canvas></div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card"><h3>Team Availability — June</h3><div style="position:relative;height:230px"><canvas id="ch-att" role="img" aria-label="Daily team availability"></canvas></div></div>
+    <div class="chart-card"><h3>Renewal Status</h3><div style="position:relative;height:230px"><canvas id="ch-ren" role="img" aria-label="Renewal status breakdown"></canvas></div></div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="pane" id="pane-projects">
+  <div class="filter-bar">
+    <span class="flabel">Search:</span>
+    <input type="text" id="pj-search" placeholder="Name, champion, dev, comment…" oninput="renderProjects()">
+    <span class="flabel">Status:</span>
+    <select id="pj-status" onchange="renderProjects()"><option value="">All</option></select>
+    <span class="flabel">Champion:</span>
+    <select id="pj-champ" onchange="renderProjects()"><option value="">All</option></select>
+    <span id="pj-count" style="margin-left:auto;font-size:11px;color:var(--text2)"></span>
+    <button class="btn btn-primary" onclick="addProject()">+ Add Row</button>
+  </div>
+  <div class="tbl-wrap">
+    <table><thead><tr>
+      <th style="width:32px">#</th>
+      <th style="min-width:180px">Process Name</th>
+      <th style="min-width:110px">Status</th>
+      <th>Champion</th>
+      <th>Architect</th>
+      <th>Dev 1</th>
+      <th>Dev 2</th>
+      <th>BA</th>
+      <th style="min-width:90px">ETA</th>
+      <th style="min-width:260px">Latest Comment</th>
+      <th style="width:60px">Actions</th>
+    </tr></thead>
+    <tbody id="pj-body"></tbody></table>
+  </div>
+</div>
+
+<!-- ATTENDANCE -->
+<div class="pane" id="pane-attendance">
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+    <span style="font-size:11px;color:var(--text2)">Click any cell to cycle status.</span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:#4ade80">● Yes</span>
+      <span style="font-size:11px;color:#fcd34d">● Leave</span>
+      <span style="font-size:11px;color:#fdba74">● ML</span>
+      <span style="font-size:11px;color:#fca5a5">● Unavailable</span>
+      <span style="font-size:11px;color:var(--text3)">● —</span>
+    </div>
+    <button class="btn btn-primary" onclick="addAttMember()" style="margin-left:auto">+ Add Member</button>
+  </div>
+  <div class="att-wrap"><table class="att-table" id="att-tbl"></table></div>
+</div>
+
+<!-- RENEWALS -->
+<div class="pane" id="pane-renewal">
+  <div class="filter-bar">
+    <span class="flabel">Status:</span>
+    <select id="ren-filter" onchange="renderRenewals()">
+      <option value="">All</option><option value="Open">Open</option><option value="Completed">Completed</option><option value="Closed">Closed</option>
+    </select>
+    <button class="btn btn-primary" onclick="addRenewal()" style="margin-left:auto">+ Add Row</button>
+  </div>
+  <div class="tbl-wrap">
+    <table><thead><tr>
+      <th style="width:32px">#</th>
+      <th style="min-width:200px">Process / Certificate</th>
+      <th>Environment</th>
+      <th>Expiry Date</th>
+      <th>Status</th>
+      <th>POC</th>
+      <th style="width:60px">Actions</th>
+    </tr></thead>
+    <tbody id="ren-body"></tbody></table>
+  </div>
+</div>
+
+<!-- PATCH -->
+<div class="pane" id="pane-patch">
+  <div class="filter-bar">
+    <input type="text" id="pt-search" placeholder="Search period, developer…" oninput="renderPatch()" style="width:200px">
+    <button class="btn btn-primary" onclick="addPatch()" style="margin-left:auto">+ Add Row</button>
+  </div>
+  <div class="tbl-wrap">
+    <table><thead><tr>
+      <th style="width:32px">#</th>
+      <th>Period</th>
+      <th>Date</th>
+      <th>Developer</th>
+      <th>Reviewer</th>
+      <th>Validation Status</th>
+      <th style="width:60px">Actions</th>
+    </tr></thead>
+    <tbody id="pt-body"></tbody></table>
+  </div>
+</div>
+
+<!-- DRILL-DOWN OVERLAY (stat card / chart click) -->
+<div class="overlay" id="drill-overlay" onclick="closeDrillIfBg(event)">
+  <div class="modal" style="max-width:820px;width:95vw;" id="drill-modal">
+    <span class="modal-close" onclick="closeDrill()">✕</span>
+    <h2 id="drill-title" style="margin-bottom:14px"></h2>
+    <div class="tbl-wrap">
+      <table><thead><tr>
+        <th>#</th><th style="min-width:180px">Process Name</th><th>Status</th><th>Champion</th><th>Architect</th><th>Dev 1</th><th>Dev 2</th><th>ETA</th><th style="min-width:200px">Latest Comment</th>
+      </tr></thead>
+      <tbody id="drill-body"></tbody></table>
+    </div>
+  </div>
+</div>
+<!-- CHART TOOLTIP POPUP -->
+<div id="chart-tooltip" style="display:none;position:fixed;z-index:500;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;max-width:280px;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+  <div id="ctt-label" style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:8px;"></div>
+  <div id="ctt-list" style="font-size:11px;color:var(--text2);line-height:1.7;"></div>
+  <div style="font-size:10px;color:var(--accent);margin-top:6px;">Click to filter in Projects tab</div>
+</div>
+
+<!-- EDIT MODAL (Project) -->
+<div class="overlay" id="edit-overlay" onclick="closeEditIfBg(event)">
+  <div class="modal" id="edit-modal">
+    <span class="modal-close" onclick="closeEdit()">✕</span>
+    <h2 id="em-title">Edit Project</h2>
+    <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="em-fields"></div>
+    <div style="margin-top:12px;">
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Latest Comment</div>
+      <textarea class="inline-edit" id="em-comment" rows="5" style="width:100%"></textarea>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+      <button class="btn" onclick="closeEdit()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <p>Delete <span class="cbname" id="cb-name"></span>?</p>
+    <p style="font-size:11px;">This cannot be undone.</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:4px;">
+      <button class="btn" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="cb-confirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="overlay" id="view-overlay" onclick="closeViewIfBg(event)">
+  <div class="modal" id="view-modal">
+    <span class="modal-close" onclick="closeView()">✕</span>
+    <h2 id="vm-name"></h2>
+    <div id="vm-status" style="margin:6px 0 12px"></div>
+    <div class="mrow" id="vm-meta"></div>
+    <div class="mcomment" id="vm-comment"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ===================== DEFAULT DATA =====================
+const DEFAULT = {
+projects:[
+{id:1,no:"1",name:"Client Timesheet Integration",status:"F.Prod (CR)",champion:"Ram",arch:"Giri",dev1:"Suresh",dev2:"Kiruba Sri",ba:"Ramesh",eta:"",comment:"» 04/13 - Bot is moved to full prod, awaiting for Go Live Mail.\n» Project GoLive Mail is pending."},
+{id:2,no:"2",name:"Snow Automation",status:"UAT",champion:"Sreenikethan",arch:"Esakki/Asalam",dev1:"Alphy",dev2:"Suresh",ba:"Dinesh",eta:"24th Apr'26",comment:"» 06/17 - Call held with Biz on 16th Jun'26, observations shared by Biz which need to be fixed."},
+{id:3,no:"3",name:"ICD Contract Creation E-mail Follow-up",status:"Dev",champion:"Harini",arch:"Asalam",dev1:"Kiruba Sri",dev2:"Deepti",ba:"Ramesh",eta:"22nd Jun'26",comment:"» 06/17 - (Kiruba Sri) Call scheduled with Biz on 22nd Jun'26 for S.Prod.\n(Deepti) Dev working on W@R report. Completion - 45%."},
+{id:4,no:"4",name:"Direct Invoices - Invoice Finalization (Phase2)",status:"UAT",champion:"Harini",arch:"Giri",dev1:"Abinaya",dev2:"Neelima",ba:"Dinesh",eta:"5th May'26",comment:"» 06/17 - 2nd UAT run completed on 15th Jun'26. Hold cases received, faced bug in Hold Bot, to be fixed."},
+{id:5,no:"5",name:"Client Timesheet Integration - Field Glass",status:"Dev",champion:"Ram",arch:"Giri",dev1:"Suresh",dev2:"Priyanka",ba:"Ramesh",eta:"7th Aug'26",comment:"» 06/17 - Inputs shared by Biz on 11th Jun'26, code changes to be updated for few divisions. IDR Report Downloader - 2%."},
+{id:6,no:"6",name:"Invoice Finalization - CR",status:"UAT (CR)",champion:"Harini",arch:"Giri",dev1:"Neelima",dev2:"",ba:"Dinesh",eta:"16th Apr'26",comment:"» 06/17 - Prod Dep Doc shared on 10th Jun'26. Awaiting for SVN access. S.Prod planned from 15th Jun'26."},
+{id:7,no:"7",name:"Short Billing Process",status:"Dev",champion:"Harini",arch:"Giri",dev1:"Kiruba Sri",dev2:"Lavanyaa",ba:"Priya",eta:"17th Jul'26",comment:"» 06/17 - Kiruba Sri Completion - 10%. Lavanyaa - Dev started on 15th Jun'26."},
+{id:8,no:"8",name:"AP Pay Cycle - India Region",status:"UAT",champion:"Sreenikethan",arch:"Giri",dev1:"Mohan",dev2:"Kaviarasan",ba:"Ramesh",eta:"3rd Jun'26",comment:"» 06/17 - Dev Completion - Mohan - 95%, UTC shared on 16th Jun'26. UAT is in progress."},
+{id:9,no:"9",name:"SOX Automation IT controls - CR",status:"UAT (CR)",champion:"Venkat",arch:"Giri",dev1:"Mani B",dev2:"",ba:"Dinesh",eta:"4/30/2026",comment:"» 06/17 - Prod dep completed on 12th Jun'26. Artifacts to be reviewed. Awaiting for inputs for Prod Dry run."},
+{id:10,no:"10",name:"Peoplesoft ESA & other Reports",status:"Dev",champion:"Sreenikethan",arch:"Giri",dev1:"Manikanda",dev2:"Santhiya",ba:"Dinesh",eta:"19th Jun'26",comment:"» 06/17 - Dispatcher Completion - 90%. Downloader Bot Completion - 85%."},
+{id:11,no:"11",name:"CMTR Scale Up - CR",status:"Dev",champion:"Venkat",arch:"Giri",dev1:"Mohan",dev2:"TBD",ba:"Dinesh",eta:"22nd May'26",comment:"» 06/17 - UAT Sign-off received on 16th Jun'26. Prod Dep Doc to be shared on 17th Jun'26."},
+{id:12,no:"12",name:"Intercompany Letter - CR",status:"Dev (CR)",champion:"Harini",arch:"Asalam",dev1:"Vignesh",dev2:"",ba:"Ramesh",eta:"",comment:"» 06/17 - Dev Completion - 50%. CR Document approval received on 11th Jun'26. WBS to be shared on 15th Jun'26."},
+{id:13,no:"13",name:"T&E Email BOT - POC",status:"Req",champion:"Ram",arch:"Giri",dev1:"Mani B",dev2:"",ba:"TBD",eta:"",comment:"» 06/11 - Mail sent to Wintel team for Url access."},
+{id:14,no:"14",name:"US Tax Returns Workings",status:"Req",champion:"Venkat",arch:"Asalam",dev1:"TBD",dev2:"TBD",ba:"Ramesh",eta:"",comment:"» 06/17 - Call to be scheduled with Biz to capture Base Amt logic. BRD is in progress."},
+{id:15,no:"15",name:"AP Pay Cycle - APAC Region",status:"Design",champion:"Sreenikethan",arch:"Giri",dev1:"Mohan",dev2:"Kaviarasan",ba:"Ramesh",eta:"",comment:"» 06/17 - BRD Sign-off received on 12th Jun'26. Updated BRD shared with Biz on 16th Jun'26 for approval."},
+{id:16,no:"16",name:"Revenue Reserves",status:"WM",champion:"Ram",arch:"Giri",dev1:"Mohan",dev2:"",ba:"",eta:"2nd Apr'26",comment:"» Awaiting for WM CR."},
+{id:17,no:"17",name:"LTA - TS Recon",status:"WM",champion:"Harini",arch:"Narasi",dev1:"Priyanka",dev2:"",ba:"",eta:"2nd Apr'26",comment:"» UAT Dep completed. Prod Dep is pending from Architect."},
+{id:18,no:"18",name:"Amex Clearance - CE",status:"WM",champion:"Sreenikethan",arch:"Giri",dev1:"Alphy",dev2:"Santhiya",ba:"",eta:"TBD",comment:"» Code changes required. Awaiting for Process CR."},
+{id:19,no:"19",name:"Amex Clearance - NA Phase I",status:"WM",champion:"Sreenikethan",arch:"Giri",dev1:"Alphy",dev2:"Santhiya",ba:"",eta:"TBD",comment:"» Code changes required. Awaiting for Process CR."},
+{id:20,no:"20",name:"Amex Clearance - NA Phase II",status:"Hold",champion:"Sreenikethan",arch:"Giri",dev1:"Alphy",dev2:"Santhiya",ba:"",eta:"TBD",comment:"» On hold. Awaiting for Process CR."},
+{id:21,no:"21",name:"Amex Clearance - UK (Priority)",status:"WM",champion:"Sreenikethan",arch:"Giri",dev1:"Alphy",dev2:"Santhiya",ba:"",eta:"TBD",comment:"» Testing is in progress. Awaiting for biz inputs."},
+{id:22,no:"22",name:"Variable Consideration",status:"WM",champion:"Venkat",arch:"Giri",dev1:"Neelima",dev2:"",ba:"",eta:"24th Apr'26",comment:"» 06/17 - 1st run Results shared on 16th Jun'26. Test data received for 2nd run, results to be shared."},
+{id:23,no:"23",name:"External Invoice Circulation",status:"WM",champion:"Ram",arch:"Giri",dev1:"Esakki",dev2:"",ba:"",eta:"3rd Apr'26",comment:"» UAT Dep Doc completed. Prod Dep will be initiated after CR is raised."},
+{id:24,no:"24",name:"US Payroll Supplemental Process",status:"WM",champion:"Ram",arch:"Giri",dev1:"Mani B",dev2:"",ba:"",eta:"6th Apr'26",comment:"» UAT Testing completed. Dep pending from Architect."},
+{id:25,no:"25",name:"Payroll & HCM",status:"WM",champion:"Ram",arch:"",dev1:"Vignesh",dev2:"",ba:"",eta:"2nd Apr'26",comment:"» UAT Dep completed. Prod Dep is pending."},
+{id:26,no:"26",name:"AR Cash",status:"WM",champion:"Ram",arch:"",dev1:"Vignesh",dev2:"",ba:"",eta:"TBD",comment:""},
+{id:27,no:"27",name:"PS ESA - EMEA & APAC",status:"WM",champion:"Sreenikethan",arch:"Giri",dev1:"Manikanda",dev2:"Santhiya",ba:"",eta:"18th Apr'26",comment:"» Waiting for CR number. PUT ON HOLD."},
+{id:28,no:"28",name:"Payroll Accounting UK CE",status:"WM",champion:"Ram",arch:"Esakki",dev1:"Santhiya",dev2:"",ba:"",eta:"15th Apr'26",comment:"» UAT Sign-off received on 15th May'26. Prod Dep pending."},
+{id:29,no:"29",name:"Revenue Reporting - 1 & 2",status:"WM",champion:"Ram",arch:"Esakki",dev1:"Deepti",dev2:"",ba:"",eta:"15th Apr'26",comment:"» Awaiting for UAT Sign-off. Prod Dep Doc shared on 24th Apr'26."}
+],
+attendance:[
+{name:"Abinaya",days:{"May 29th":"Yes","June 1st":"Unavailable","June 2nd":"Unavailable","June 3rd":"Unavailable","June 4th":"Leave","June 5th":"ML","June 8th":"ML","June 9th":"ML","June 10th":"ML","June 11th":"ML","June 12th":"ML","June 15th":"ML","June 16th":"ML","June 17th":"ML","June 18th":""}},
+{name:"Alphy",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Unavailable (i)","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Unavailable (i)","June 17th":"Yes","June 18th":""}},
+{name:"Asalam",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Dinesh",days:{"May 29th":"Leave","June 1st":"Leave","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Deepti",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Unavailable","June 8th":"Unavailable (i)","June 9th":"Yes","June 10th":"Unavailable","June 11th":"Yes","June 12th":"Unavailable","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Esakki",days:{"May 29th":"Unavailable (i)","June 1st":"Unavailable","June 2nd":"Leave","June 3rd":"Leave","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Leave","June 17th":"Yes","June 18th":""}},
+{name:"Giri",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Unavailable","June 10th":"Unavailable","June 11th":"Leave","June 12th":"Leave","June 15th":"Unavailable (i)","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Harini",days:{"May 29th":"Unavailable","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Unavailable","June 4th":"Yes","June 5th":"Leave","June 8th":"Yes","June 9th":"Unavailable (i)","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Unavailable (i)","June 17th":"Unavailable (i)","June 18th":""}},
+{name:"Kaviarasan",days:{"May 29th":"Unavailable (i)","June 1st":"Yes","June 2nd":"Unavailable","June 3rd":"Yes","June 4th":"Yes","June 5th":"Unavailable (i)","June 8th":"Unavailable (i)","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Kiruba Sri",days:{"May 29th":"Yes","June 1st":"Leave","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Leave","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Lavanyaa K",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Unavailable (i)","June 3rd":"Yes","June 4th":"Leave","June 5th":"Leave","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Unavailable","June 12th":"Yes","June 15th":"Yes","June 16th":"Unavailable (i)","June 17th":"Yes","June 18th":""}},
+{name:"Mani B",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Unavailable (i)","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Unavailable (i)","June 10th":"Yes","June 11th":"Yes","June 12th":"Unavailable (i)","June 15th":"Unavailable (i)","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Manikanda",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Mohan",days:{"May 29th":"Unavailable","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Neelima",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Leave","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Unavailable (i)","June 10th":"Yes","June 11th":"Yes","June 12th":"Unavailable (i)","June 15th":"Yes","June 16th":"Unavailable","June 17th":"Unavailable (i)","June 18th":""}},
+{name:"Priya D'Silva",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Unavailable (i)","June 3rd":"Yes","June 4th":"Unavailable (i)","June 5th":"Yes","June 8th":"Unavailable (i)","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Leave","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Priyanka",days:{"May 29th":"Leave","June 1st":"Leave","June 2nd":"Leave","June 3rd":"Leave","June 4th":"Leave","June 5th":"Leave","June 8th":"Yes","June 9th":"Yes","June 10th":"Unavailable (i)","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Ram",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Unavailable (i)","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Unavailable (i)","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Ramesh",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Leave","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Leave","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Santhiya",days:{"May 29th":"Leave","June 1st":"Leave","June 2nd":"Leave","June 3rd":"Leave","June 4th":"Leave","June 5th":"Leave","June 8th":"Leave","June 9th":"Leave","June 10th":"Leave","June 11th":"Leave","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Sreenikethan",days:{"May 29th":"Unavailable","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Unavailable","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Suresh",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Venkatraman",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Yes","June 9th":"Yes","June 10th":"Yes","June 11th":"Yes","June 12th":"Yes","June 15th":"Yes","June 16th":"Yes","June 17th":"Yes","June 18th":""}},
+{name:"Vignesh",days:{"May 29th":"Yes","June 1st":"Yes","June 2nd":"Yes","June 3rd":"Yes","June 4th":"Yes","June 5th":"Yes","June 8th":"Unavailable (i)","June 9th":"Yes","June 10th":"Leave","June 11th":"Leave","June 12th":"Unavailable","June 15th":"Yes","June 16th":"Leave","June 17th":"Yes","June 18th":""}}
+],
+renewals:[
+{id:1,process:"AMEX API Certificate",env:"Prod",expiry:"2026-05-22",status:"Open",poc:"Mohan"},
+{id:2,process:"Saas_RPAO365_Uipath",env:"Dev/UAT/Prod",expiry:"2026-06-07",status:"Open",poc:"Giri"},
+{id:3,process:"Network Maintenance Activity",env:"Dev/UAT/Prod",expiry:"2026-06-20",status:"Open",poc:"Giri"},
+{id:4,process:"SFTP Account Renewal",env:"Dev/UAT/Prod",expiry:"2026-07-04",status:"Open",poc:"Esakki"},
+{id:5,process:"Quarterly DB Archival",env:"Prod",expiry:"2026-07-08",status:"Open",poc:"Asalam"},
+{id:6,process:"AMEX API Certificate",env:"UAT",expiry:"2026-09-12",status:"Open",poc:"Mohan"},
+{id:7,process:"PCOE Chat BOT Certificate Renewal",env:"Prod",expiry:"2027-01-06",status:"Open",poc:"Esakki"},
+{id:8,process:"Orchestrator Certificate Renewal",env:"Dev",expiry:"2028-03-02",status:"Open",poc:"Giri"},
+{id:9,process:"Orchestrator Certificate Renewal",env:"Prod/UAT",expiry:"2026-05-05",status:"Completed",poc:"Giri"},
+{id:10,process:"SFTP Account Renewal",env:"Dev/UAT/Prod",expiry:"2026-05-09",status:"Completed",poc:"Esakki"},
+{id:11,process:"POE Chat BOT Azure API Secret Key",env:"Prod",expiry:"2026-05-27",status:"Completed",poc:"Esakki"},
+{id:12,process:"Procurement Chat BOT Certificate Renewal",env:"Prod",expiry:"2025-06-26",status:"Completed",poc:"Esakki"},
+{id:13,process:"AMEX API Certificate",env:"Prod",expiry:"2025-05-21",status:"Completed",poc:"Karthik"},
+{id:14,process:"idcs.gbsfinanacoe.cognizant.com",env:"Prod",expiry:"2026-06-14",status:"Closed",poc:"Vignesh"},
+{id:15,process:"SFTP Account Renewal",env:"Dev/UAT/Prod",expiry:"2026-06-09",status:"Closed",poc:"Esakki"}
+],
+patches:[
+{id:1,period:"Jan-2025",date:"2025-01-25",dev:"Thusitha",reviewer:"Karthik",vstatus:"Failure"},
+{id:2,period:"Feb-2025",date:"2025-02-22",dev:"Suresh",reviewer:"Esakki",vstatus:"Success"},
+{id:3,period:"Mar-2025",date:"2025-03-29",dev:"Priyanka",reviewer:"Esakki",vstatus:"Success"},
+{id:4,period:"May-2025",date:"2025-05-24",dev:"Santhiya",reviewer:"Karthik",vstatus:"Success"},
+{id:5,period:"Jun-2025",date:"2025-06-21",dev:"Manikanda",reviewer:"Giri",vstatus:"Success"},
+{id:6,period:"Jul-2025",date:"2025-07-19",dev:"Abinaya",reviewer:"Esakki",vstatus:"Success"},
+{id:7,period:"Aug-2025",date:"2025-08-30",dev:"Kaviarasan",reviewer:"Asalam",vstatus:"Failure"},
+{id:8,period:"Sep-2025",date:"2025-09-20",dev:"Neelima",reviewer:"Dinesh",vstatus:"Success"},
+{id:9,period:"Oct-2025",date:"2025-10-25",dev:"Alphy",reviewer:"Priya",vstatus:"Success"},
+{id:10,period:"Nov-2025",date:"2025-11-22",dev:"Mohan",reviewer:"Sreenikethan",vstatus:"Success"},
+{id:11,period:"Jan-2026",date:"2026-01-24",dev:"Kiruba",reviewer:"Harini",vstatus:"Success"},
+{id:12,period:"Feb-2026",date:"2026-02-21",dev:"Deepti",reviewer:"Ramesh",vstatus:"Success"},
+{id:13,period:"Mar-2026",date:"2026-03-21",dev:"Mani Bose",reviewer:"Giri",vstatus:"Success"},
+{id:14,period:"Apr-2026",date:"2026-04-25",dev:"Vignesh",reviewer:"Giri",vstatus:"Success"},
+{id:15,period:"May-2026",date:"2026-05-23",dev:"Abinaya",reviewer:"Asalam",vstatus:"Pending"},
+{id:16,period:"Jun-2026",date:"2026-06-21",dev:"",reviewer:"",vstatus:"Pending"}
+]
+};
+
+// ===================== STATE =====================
+const STORAGE_KEY = 'gbs_dashboard_v3';
+let STATE;
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw){STATE=JSON.parse(raw);return;}
+  }catch(e){}
+  STATE=JSON.parse(JSON.stringify(DEFAULT));
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(STATE));
+  const ind=document.getElementById('saveInd');
+  ind.classList.add('show');
+  clearTimeout(ind._t);
+  ind._t=setTimeout(()=>ind.classList.remove('show'),1800);
+}
+function resetToDefaults(){
+  if(!confirm('Reset ALL data to original defaults? This will erase all your edits.'))return;
+  STATE=JSON.parse(JSON.stringify(DEFAULT));
+  saveState();
+  location.reload();
+}
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(STATE,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='gbs_dashboard_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+
+// ===================== TABS =====================
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('pane-'+t.dataset.tab).classList.add('active');
+    if(t.dataset.tab==='overview')rebuildCharts();
+  });
+});
+
+// ===================== BADGE =====================
+function badge(s){
+  const sl=(s||'').toLowerCase();
+  if(sl.includes('f.prod')||sl.includes('f prod')||sl.includes('full prod')||sl==='production')return`<span class="badge b-fprod">${s}</span>`;
+  if(sl.includes('s.prod')||sl.includes('s. prod')||sl.includes('supervised'))return`<span class="badge b-sprod">${s}</span>`;
+  if(sl.includes('uat'))return`<span class="badge b-uat">${s}</span>`;
+  if(sl.includes('dev'))return`<span class="badge b-dev">${s}</span>`;
+  if(sl.includes('design'))return`<span class="badge b-design">${s}</span>`;
+  if(sl.includes('req')||sl.includes('assess')||sl.includes('analysis')||sl.includes('gather'))return`<span class="badge b-req">${s}</span>`;
+  if(sl.includes('hold'))return`<span class="badge b-hold">${s}</span>`;
+  if(sl==='wm')return`<span class="badge b-wm">WM</span>`;
+  return`<span class="badge b-other">${s||'—'}</span>`;
+}
+
+// ===================== PROJECTS =====================
+const STATUS_OPTIONS=['Req','Req (CR)','Req (Hold)','Design','Design (CR)','Dev','Dev (CR)','Dev (Hold)','UAT','UAT (CR)','UAT (Hold)','S.Prod','S.Prod (CR)','F.Prod','F.Prod (CR)','WM','Hold','Assessment','Production'];
+let editIdx=null;
+
+function initProjectFilters(){
+  const ss=document.getElementById('pj-status'), sc=document.getElementById('pj-champ');
+  const curS=ss.value, curC=sc.value;
+  ss.innerHTML='<option value="">All</option>';
+  sc.innerHTML='<option value="">All</option>';
+  [...new Set(STATE.projects.map(p=>p.status))].sort().forEach(s=>{ss.innerHTML+=`<option value="${s}">${s}</option>`;});
+  [...new Set(STATE.projects.map(p=>p.champion).filter(Boolean))].sort().forEach(c=>{sc.innerHTML+=`<option value="${c}">${c}</option>`;});
+  ss.value=curS; sc.value=curC;
+}
+
+function renderProjects(){
+  initProjectFilters();
+  const q=(document.getElementById('pj-search').value||'').toLowerCase();
+  const st=document.getElementById('pj-status').value;
+  const ch=document.getElementById('pj-champ').value;
+  const rows=STATE.projects.filter(p=>{
+    if(st&&p.status!==st)return false;
+    if(ch&&p.champion!==ch)return false;
+    if(q&&![p.name,p.champion,p.dev1,p.dev2,p.arch,p.ba,p.comment,p.eta].join(' ').toLowerCase().includes(q))return false;
+    return true;
+  });
+  document.getElementById('pj-count').textContent=`${rows.length} of ${STATE.projects.length}`;
+  document.getElementById('pj-body').innerHTML=rows.map(p=>{
+    const i=STATE.projects.indexOf(p);
+    const cmt=(p.comment||'').replace(/\n/g,' ');
+    const cshort=cmt.length>100?cmt.substring(0,100)+'…':cmt;
+    return`<tr>
+      <td style="color:var(--text3)">${p.no||i+1}</td>
+      <td style="font-weight:600;max-width:180px;cursor:pointer" onclick="viewProject(${i})" title="Click to view full detail">${p.name}</td>
+      <td>${badge(p.status)}</td>
+      <td style="color:var(--text2)">${p.champion||'—'}</td>
+      <td style="color:var(--text2)">${p.arch||'—'}</td>
+      <td style="color:var(--text2)">${p.dev1||'—'}</td>
+      <td style="color:var(--text2)">${p.dev2||'—'}</td>
+      <td style="color:var(--text2)">${p.ba||'—'}</td>
+      <td style="color:var(--yellow);font-size:11px;max-width:90px">${(p.eta||'—').replace(/\n/g,' ')}</td>
+      <td style="color:var(--text2);font-size:11px;max-width:260px" title="${cmt}">${cshort||'—'}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn" style="padding:3px 8px;font-size:11px" onclick="openEdit(${i})" title="Edit">✏️</button>
+          <button class="btn btn-danger" style="padding:3px 8px;font-size:11px" onclick="confirmDelete('project',${i},\`${p.name.replace(/`/g,"'")}\`)" title="Delete">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function addProject(){
+  const maxId=STATE.projects.reduce((m,p)=>Math.max(m,p.id||0),0);
+  STATE.projects.push({id:maxId+1,no:String(STATE.projects.length+1),name:"New Process",status:"Req",champion:"",arch:"",dev1:"",dev2:"",ba:"",eta:"",comment:""});
+  saveState();
+  renderProjects();
+  openEdit(STATE.projects.length-1);
+}
+
+function openEdit(i){
+  editIdx=i;
+  const p=STATE.projects[i];
+  document.getElementById('em-title').textContent='Edit: '+p.name;
+  const fields=[
+    {key:'name',label:'Process Name'},
+    {key:'status',label:'Status',type:'select',opts:STATUS_OPTIONS},
+    {key:'champion',label:'Champion'},
+    {key:'arch',label:'Architect'},
+    {key:'dev1',label:'Dev 1'},
+    {key:'dev2',label:'Dev 2'},
+    {key:'ba',label:'BA'},
+    {key:'eta',label:'ETA'},
+  ];
+  document.getElementById('em-fields').innerHTML=fields.map(f=>`
+    <div>
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">${f.label}</div>
+      ${f.type==='select'
+        ?`<select class="inline-edit" id="ef-${f.key}">${f.opts.map(o=>`<option value="${o}"${p[f.key]===o?' selected':''}>${o}</option>`).join('')}</select>`
+        :`<input class="inline-edit" id="ef-${f.key}" value="${(p[f.key]||'').replace(/"/g,'&quot;')}">`
+      }
+    </div>`).join('');
+  document.getElementById('em-comment').value=p.comment||'';
+  document.getElementById('edit-overlay').classList.add('open');
+}
+
+function saveEdit(){
+  if(editIdx===null)return;
+  const p=STATE.projects[editIdx];
+  ['name','status','champion','arch','dev1','dev2','ba','eta'].forEach(k=>{
+    const el=document.getElementById('ef-'+k);
+    if(el)p[k]=el.value;
+  });
+  p.comment=document.getElementById('em-comment').value;
+  saveState();
+  renderProjects();
+  rebuildCharts();
+  closeEdit();
+}
+
+function closeEdit(){document.getElementById('edit-overlay').classList.remove('open');editIdx=null;}
+function closeEditIfBg(e){if(e.target===document.getElementById('edit-overlay'))closeEdit();}
+
+// VIEW modal
+function viewProject(i){
+  const p=STATE.projects[i];
+  document.getElementById('vm-name').textContent=p.name;
+  document.getElementById('vm-status').innerHTML=badge(p.status);
+  document.getElementById('vm-meta').innerHTML=[
+    ['Champion',p.champion],['Architect',p.arch],['Dev 1',p.dev1],['Dev 2',p.dev2],['BA',p.ba],['ETA',p.eta]
+  ].filter(([,v])=>v).map(([k,v])=>`<div class="mkv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  document.getElementById('vm-comment').textContent=p.comment||'No recent update.';
+  document.getElementById('view-overlay').classList.add('open');
+}
+function closeView(){document.getElementById('view-overlay').classList.remove('open');}
+function closeViewIfBg(e){if(e.target===document.getElementById('view-overlay'))closeView();}
+
+// DELETE CONFIRM
+let _deleteCb=null;
+function confirmDelete(type,idx,name){
+  document.getElementById('cb-name').textContent=name;
+  document.getElementById('confirm-overlay').classList.add('open');
+  _deleteCb=()=>{
+    if(type==='project')STATE.projects.splice(idx,1);
+    else if(type==='renewal')STATE.renewals.splice(idx,1);
+    else if(type==='patch')STATE.patches.splice(idx,1);
+    saveState();
+    if(type==='project'){renderProjects();rebuildCharts();}
+    else if(type==='renewal')renderRenewals();
+    else if(type==='patch')renderPatch();
+    closeConfirm();
+  };
+  document.getElementById('cb-confirm').onclick=_deleteCb;
+}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('open');_deleteCb=null;}
+
+// ===================== ATTENDANCE =====================
+const ATT_CYCLE=['Yes','Leave','ML','Unavailable','Unavailable (i)',''];
+function attClass(v){
+  const vl=(v||'').toLowerCase();
+  if(v==='Yes')return'att-yes';
+  if(vl.includes('leave'))return'att-leave';
+  if(v==='ML')return'att-ml';
+  if(vl.includes('unavail'))return'att-unavail';
+  return'att-empty';
+}
+function attDisp(v){
+  if(v==='Yes')return'✓';
+  if(v==='Leave')return'L';
+  if(v==='ML')return'ML';
+  if(v==='Unavailable')return'U';
+  if(v==='Unavailable (i)')return'U(i)';
+  return'—';
+}
+function renderAttendance(){
+  const days=STATE.attendance.length?Object.keys(STATE.attendance[0].days):[];
+  let h=`<thead><tr><th style="min-width:110px">Name</th>`;
+  days.forEach(d=>{h+=`<th>${d}</th>`;});
+  h+=`<th>Action</th></tr></thead><tbody>`;
+  STATE.attendance.forEach((m,mi)=>{
+    h+=`<tr><td>${m.name}</td>`;
+    days.forEach(d=>{
+      const v=m.days[d]||'';
+      h+=`<td class="${attClass(v)}" title="${v}" onclick="cycleAtt(${mi},'${d}')">${attDisp(v)}</td>`;
+    });
+    h+=`<td><button class="btn btn-danger" style="padding:2px 7px;font-size:11px" onclick="confirmDelete('att_direct',${mi},'${m.name}')">✕</button></td></tr>`;
+  });
+  h+='</tbody>';
+  document.getElementById('att-tbl').innerHTML=h;
+  // Fix delete for attendance (inline)
+  document.querySelectorAll('#att-tbl .btn-danger').forEach((btn,i)=>{
+    btn.onclick=()=>{
+      if(confirm('Remove '+STATE.attendance[i].name+'?')){
+        STATE.attendance.splice(i,1);saveState();renderAttendance();rebuildCharts();
+      }
+    };
+  });
+}
+function cycleAtt(mi,day){
+  const cur=STATE.attendance[mi].days[day]||'';
+  const idx=ATT_CYCLE.indexOf(cur);
+  STATE.attendance[mi].days[day]=ATT_CYCLE[(idx+1)%ATT_CYCLE.length];
+  saveState();renderAttendance();rebuildCharts();
+}
+function addAttMember(){
+  const name=prompt('Enter member name:');
+  if(!name||!name.trim())return;
+  const days={};
+  const tmpl=STATE.attendance[0]||{days:{}};
+  Object.keys(tmpl.days).forEach(d=>{days[d]='';});
+  STATE.attendance.push({name:name.trim(),days});
+  saveState();renderAttendance();
+}
+
+// ===================== RENEWALS =====================
+const REN_STATUS=['Open','Completed','Closed'];
+function renderRenewals(){
+  const f=document.getElementById('ren-filter').value;
+  const rows=f?STATE.renewals.filter(r=>r.status===f):STATE.renewals;
+  const today=new Date('2026-06-17');
+  document.getElementById('ren-body').innerHTML=rows.map((r,ii)=>{
+    const i=STATE.renewals.indexOf(r);
+    const isOpen=r.status==='Open';
+    let dtDisp=r.expiry||'—';
+    if(isOpen&&r.expiry){
+      const d=new Date(r.expiry);
+      const diff=Math.ceil((d-today)/86400000);
+      if(diff<0)dtDisp=`<span style="color:var(--red);font-weight:700">${r.expiry} ⚠</span>`;
+      else if(diff<=30)dtDisp=`<span style="color:var(--yellow);font-weight:700">${r.expiry} (${diff}d)</span>`;
+    }
+    const sb=r.status==='Open'?'<span class="badge b-open">Open</span>':r.status==='Completed'?'<span class="badge b-completed">Completed</span>':'<span class="badge b-closed">Closed</span>';
+    return`<tr>
+      <td style="color:var(--text3)">${ii+1}</td>
+      <td style="font-weight:600;max-width:200px" contenteditable="true" class="edit-trigger" onblur="saveRenCell(${i},'process',this.textContent)">${r.process}</td>
+      <td contenteditable="true" class="edit-trigger" onblur="saveRenCell(${i},'env',this.textContent)">${r.env||'—'}</td>
+      <td><input type="date" style="background:transparent;border:none;color:var(--text);font-size:12px;cursor:pointer" value="${r.expiry||''}" onchange="saveRenCell(${i},'expiry',this.value)"></td>
+      <td><select style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px" onchange="saveRenCell(${i},'status',this.value)">
+        ${REN_STATUS.map(s=>`<option value="${s}"${r.status===s?' selected':''}>${s}</option>`).join('')}
+      </select></td>
+      <td contenteditable="true" class="edit-trigger" onblur="saveRenCell(${i},'poc',this.textContent)">${r.poc||'—'}</td>
+      <td><button class="btn btn-danger" style="padding:3px 8px;font-size:11px" onclick="confirmDelete('renewal',${i},'${r.process.replace(/'/g,"\\'")}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+function saveRenCell(i,key,val){STATE.renewals[i][key]=val.trim();saveState();}
+function addRenewal(){
+  const maxId=STATE.renewals.reduce((m,r)=>Math.max(m,r.id||0),0);
+  STATE.renewals.push({id:maxId+1,process:"New Certificate",env:"Prod",expiry:"",status:"Open",poc:""});
+  saveState();renderRenewals();
+}
+
+// ===================== PATCH =====================
+const PT_STATUS=['Success','Failure','Pending'];
+function renderPatch(){
+  const q=(document.getElementById('pt-search').value||'').toLowerCase();
+  const rows=STATE.patches.filter(p=>!q||[p.period,p.dev,p.reviewer,p.vstatus].join(' ').toLowerCase().includes(q));
+  document.getElementById('pt-body').innerHTML=rows.map((p,ii)=>{
+    const i=STATE.patches.indexOf(p);
+    const vb=p.vstatus==='Success'?'<span class="badge b-success">✓ Success</span>':p.vstatus==='Failure'?'<span class="badge b-fail">✗ Failure</span>':'<span class="badge b-other">Pending</span>';
+    return`<tr>
+      <td style="color:var(--text3)">${ii+1}</td>
+      <td contenteditable="true" class="edit-trigger" style="color:var(--accent)" onblur="savePtCell(${i},'period',this.textContent)">${p.period}</td>
+      <td><input type="date" style="background:transparent;border:none;color:var(--text2);font-size:12px" value="${p.date||''}" onchange="savePtCell(${i},'date',this.value)"></td>
+      <td contenteditable="true" class="edit-trigger" onblur="savePtCell(${i},'dev',this.textContent)">${p.dev||'—'}</td>
+      <td contenteditable="true" class="edit-trigger" style="color:var(--text2)" onblur="savePtCell(${i},'reviewer',this.textContent)">${p.reviewer||'—'}</td>
+      <td><select style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px" onchange="savePtCell(${i},'vstatus',this.value)">
+        ${PT_STATUS.map(s=>`<option value="${s}"${p.vstatus===s?' selected':''}>${s}</option>`).join('')}
+      </select></td>
+      <td><button class="btn btn-danger" style="padding:3px 8px;font-size:11px" onclick="confirmDelete('patch',${i},'${p.period}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+function savePtCell(i,key,val){STATE.patches[i][key]=val.trim();saveState();}
+function addPatch(){
+  const maxId=STATE.patches.reduce((m,p)=>Math.max(m,p.id||0),0);
+  STATE.patches.push({id:maxId+1,period:"",date:"",dev:"",reviewer:"",vstatus:"Pending"});
+  saveState();renderPatch();
+}
+
+// ===================== DRILL-DOWN =====================
+function openDrill(title, projects){
+  document.getElementById('drill-title').textContent=title+' — '+projects.length+' process'+(projects.length!==1?'es':'');
+  document.getElementById('drill-body').innerHTML=projects.map((p,i)=>{
+    const cmt=(p.comment||'').replace(/\n/g,' ');
+    const cshort=cmt.length>100?cmt.substring(0,100)+'…':cmt;
+    return`<tr>
+      <td style="color:var(--text3)">${i+1}</td>
+      <td style="font-weight:600">${p.name}</td>
+      <td>${badge(p.status)}</td>
+      <td style="color:var(--text2)">${p.champion||'—'}</td>
+      <td style="color:var(--text2)">${p.arch||'—'}</td>
+      <td style="color:var(--text2)">${p.dev1||'—'}</td>
+      <td style="color:var(--text2)">${p.dev2||'—'}</td>
+      <td style="color:var(--yellow);font-size:11px">${(p.eta||'—').replace(/\n/g,' ')}</td>
+      <td style="color:var(--text2);font-size:11px" title="${cmt}">${cshort||'—'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('drill-overlay').classList.add('open');
+}
+function closeDrill(){document.getElementById('drill-overlay').classList.remove('open');}
+function closeDrillIfBg(e){if(e.target===document.getElementById('drill-overlay'))closeDrill();}
+
+// Phase grouping helper — same logic used in both charts and stat cards
+function getPhaseGroup(status){
+  const s=status.trim();
+  const sl=s.toLowerCase();
+  if(sl.includes('f.prod')||sl.includes('f prod')||sl==='production'||sl.includes('full prod'))return'F.Prod';
+  if(sl.includes('s.prod')||sl.includes('s. prod'))return'S.Prod';
+  if(s.startsWith('UAT'))return'UAT';
+  if(s.startsWith('Dev'))return'Dev';
+  if(s==='WM')return'WM';
+  if(sl.includes('hold'))return'Hold';
+  if(sl.includes('req')||sl.includes('assess'))return'Req/Assess';
+  if(sl.includes('design'))return'Design';
+  return s;
+}
+
+// Navigate to Projects tab with a filter applied
+function goToProjectsFiltered(statusFilter){
+  closeDrill();
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab[data-tab="projects"]').classList.add('active');
+  document.getElementById('pane-projects').classList.add('active');
+  // Set the status filter
+  const sel=document.getElementById('pj-status');
+  // Find matching option
+  let matched='';
+  for(let i=0;i<sel.options.length;i++){
+    if(sel.options[i].value===statusFilter){matched=statusFilter;break;}
+  }
+  sel.value=matched;
+  document.getElementById('pj-search').value='';
+  renderProjects();
+  window.scrollTo(0,0);
+}
+
+// ===================== CHART TOOLTIP =====================
+const cttEl=document.getElementById('chart-tooltip');
+function showChartTip(e, label, projects){
+  cttEl.style.display='block';
+  document.getElementById('ctt-label').textContent=label+' ('+projects.length+')';
+  document.getElementById('ctt-list').innerHTML=projects.slice(0,8).map(p=>`<div>• ${p.name}</div>`).join('')+(projects.length>8?`<div style="color:var(--accent);margin-top:2px">+${projects.length-8} more…</div>`:'');
+  positionTip(e);
+}
+function positionTip(e){
+  const x=e.clientX,y=e.clientY;
+  const tw=290,th=cttEl.offsetHeight;
+  cttEl.style.left=(x+tw+16>window.innerWidth?x-tw-10:x+14)+'px';
+  cttEl.style.top=(y+th+16>window.innerHeight?y-th-10:y+10)+'px';
+}
+function hideChartTip(){cttEl.style.display='none';}
+document.addEventListener('mousemove',e=>{if(cttEl.style.display!=='none')positionTip(e);});
+
+// ===================== CHARTS =====================
+let charts={};
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function rebuildCharts(){
+  const p=STATE.projects;
+
+  // ---- Build phase map (phase label -> projects array) ----
+  const phaseMap={};
+  p.forEach(x=>{
+    const ph=getPhaseGroup(x.status);
+    if(!phaseMap[ph])phaseMap[ph]=[];
+    phaseMap[ph].push(x);
+  });
+
+  // ---- Build champion map ----
+  const champMap={};
+  p.forEach(x=>{
+    if(!x.champion)return;
+    if(!champMap[x.champion])champMap[x.champion]=[];
+    champMap[x.champion].push(x);
+  });
+
+  // ---- Stat card groups ----
+  const inProd=p.filter(x=>{const g=getPhaseGroup(x.status);return g==='F.Prod'||g==='S.Prod';});
+  const inUAT=p.filter(x=>getPhaseGroup(x.status)==='UAT');
+  const inDev=p.filter(x=>getPhaseGroup(x.status)==='Dev');
+  const wm=p.filter(x=>x.status==='WM');
+  const onHold=p.filter(x=>getPhaseGroup(x.status)==='Hold');
+  const openRen=STATE.renewals.filter(r=>r.status==='Open');
+
+  function sc(label,val,color,sub,projects){
+    const onclick=projects?`onclick="openDrill('${label}',window._drill_${label.replace(/[^a-z]/gi,'_')})"`:' ';
+    window['_drill_'+label.replace(/[^a-z]/gi,'_')]=projects;
+    const cls=projects&&projects.length?'clickable':'';
+    return`<div class="stat-card ${cls}" ${onclick} title="${projects?'Click to see projects':''}">
+      <div class="slabel">${label}</div>
+      <div class="sval" style="color:${color}">${val}</div>
+      <div class="ssub">${sub}</div>
+      ${projects&&projects.length?'<div class="click-hint">↗ Click to view list</div>':''}
+    </div>`;
+  }
+
+  document.getElementById('ov-stats').innerHTML=
+    sc('Total Processes',p.length,'var(--accent)','June 2026 tracker',p)+
+    sc('In Production',inProd.length,'var(--green)','F.Prod / S.Prod',inProd)+
+    sc('In UAT',inUAT.length,'var(--cyan)','User acceptance testing',inUAT)+
+    sc('In Development',inDev.length,'var(--purple)','Active dev',inDev)+
+    sc('Waiting Merge',wm.length,'var(--orange)','WM — awaiting CR',wm)+
+    sc('On Hold',onHold.length,'var(--red)','Blocked / waiting',onHold)+
+    sc('Team Size',STATE.attendance.length,'var(--teal)','Active members',null)+
+    sc('Open Renewals',openRen.length,'var(--yellow)','Action needed',null);
+
+  // ---- Phase bar chart ----
+  destroyChart('phase');
+  const phL=Object.keys(phaseMap), phV=phL.map(k=>phaseMap[k].length);
+  const phC=['#22c55e','#14b8a6','#5b8dee','#a855f7','#f97316','#ef4444','#f59e0b','#06b6d4'];
+  charts.phase=new Chart(document.getElementById('ch-phase'),{
+    type:'bar',
+    data:{labels:phL,datasets:[{label:'Count',data:phV,backgroundColor:phC.slice(0,phL.length),borderRadius:5,borderSkipped:false,hoverBorderWidth:2,hoverBorderColor:'#fff'}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{enabled:false}
+      },
+      onHover:(e,el)=>{
+        const canvas=document.getElementById('ch-phase');
+        canvas.style.cursor=el.length?'pointer':'default';
+        if(el.length){
+          const idx=el[0].index;
+          showChartTip(e.native,phL[idx]+' ('+phV[idx]+')',phaseMap[phL[idx]]);
+        } else hideChartTip();
+      },
+      onClick:(e,el)=>{
+        if(el.length){
+          const ph=phL[el[0].index];
+          openDrill(ph+' projects',phaseMap[ph]);
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#8b92a8',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{ticks:{color:'#8b92a8',font:{size:10},stepSize:1},grid:{color:'rgba(255,255,255,0.05)'},beginAtZero:true}
+      }
+    }
+  });
+
+  // ---- Champion bar chart ----
+  destroyChart('champ');
+  const cE=Object.entries(champMap).sort((a,b)=>b[1].length-a[1].length).slice(0,8);
+  const cL=cE.map(e=>e[0]), cV=cE.map(e=>e[1].length);
+  charts.champ=new Chart(document.getElementById('ch-champ'),{
+    type:'bar',
+    data:{labels:cL,datasets:[{label:'Processes',data:cV,backgroundColor:'#5b8dee',borderRadius:5,borderSkipped:false,hoverBackgroundColor:'#7ca8f7'}]},
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      onHover:(e,el)=>{
+        const canvas=document.getElementById('ch-champ');
+        canvas.style.cursor=el.length?'pointer':'default';
+        if(el.length){
+          const idx=el[0].index;
+          showChartTip(e.native,cL[idx],champMap[cL[idx]]);
+        } else hideChartTip();
+      },
+      onClick:(e,el)=>{
+        if(el.length){
+          const champ=cL[el[0].index];
+          openDrill(champ+' — projects',champMap[champ]);
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#8b92a8',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{ticks:{color:'#8b92a8',font:{size:11}},grid:{display:false}}
+      }
+    }
+  });
+
+  // ---- Attendance stacked bar ----
+  const days=STATE.attendance.length?Object.keys(STATE.attendance[0].days):[];
+  const attY=[],attL=[],attU=[];
+  // build per-day member lists for tooltip
+  const attMembers={};
+  days.forEach(d=>{
+    let y=0,l=0,u=0;
+    const avail=[],leave=[],unavail=[];
+    STATE.attendance.forEach(m=>{
+      const v=(m.days[d]||'').toLowerCase();
+      if(v==='yes'){y++;avail.push(m.name);}
+      else if(v.includes('leave')||v==='ml'){l++;leave.push(m.name+(v==='ml'?' (ML)':''));}
+      else if(v.includes('unavail')){u++;unavail.push(m.name);}
+    });
+    attY.push(y);attL.push(l);attU.push(u);
+    attMembers[d]={avail,leave,unavail};
+  });
+  destroyChart('att');
+  charts.att=new Chart(document.getElementById('ch-att'),{
+    type:'bar',
+    data:{
+      labels:days.map(d=>d.replace('June ','').replace('May ','')),
+      datasets:[
+        {label:'Available',data:attY,backgroundColor:'#22c55e',borderRadius:2,stack:'a'},
+        {label:'Leave/ML',data:attL,backgroundColor:'#f59e0b',borderRadius:2,stack:'a'},
+        {label:'Unavailable',data:attU,backgroundColor:'#ef4444',borderRadius:2,stack:'a'}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,labels:{color:'#8b92a8',font:{size:10},usePointStyle:true,pointStyle:'rect'}},
+        tooltip:{enabled:false}
+      },
+      onHover:(e,el)=>{
+        const canvas=document.getElementById('ch-att');
+        canvas.style.cursor=el.length?'pointer':'default';
+        if(el.length){
+          const di=el[0].index, si=el[0].datasetIndex;
+          const day=days[di];
+          const mem=attMembers[day];
+          const list=si===0?mem.avail:si===1?mem.leave:mem.unavail;
+          const lbl=si===0?'Available':si===1?'Leave/ML':'Unavailable';
+          const tt=document.getElementById('chart-tooltip');
+          tt.style.display='block';
+          document.getElementById('ctt-label').textContent=day+' — '+lbl+' ('+list.length+')';
+          document.getElementById('ctt-list').innerHTML=list.slice(0,12).map(n=>`<div>• ${n}</div>`).join('')+(list.length>12?`<div style="color:var(--accent)">+${list.length-12} more</div>`:'');
+          document.querySelector('#chart-tooltip div:last-child').style.display='none';
+          positionTip(e.native);
+        } else hideChartTip();
+      },
+      scales:{
+        x:{ticks:{color:'#8b92a8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'},stacked:true},
+        y:{ticks:{color:'#8b92a8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'},stacked:true,beginAtZero:true}
+      }
+    }
+  });
+
+  // ---- Renewal doughnut ----
+  destroyChart('ren');
+  const rc={Open:0,Completed:0,Closed:0};
+  STATE.renewals.forEach(r=>{if(rc[r.status]!==undefined)rc[r.status]++;});
+  // build per-status renewal lists
+  const renMap={
+    Open:STATE.renewals.filter(r=>r.status==='Open'),
+    Completed:STATE.renewals.filter(r=>r.status==='Completed'),
+    Closed:STATE.renewals.filter(r=>r.status==='Closed')
+  };
+  charts.ren=new Chart(document.getElementById('ch-ren'),{
+    type:'doughnut',
+    data:{
+      labels:['Open','Completed','Closed'],
+      datasets:[{data:[rc.Open,rc.Completed,rc.Closed],backgroundColor:['#f59e0b','#22c55e','#5b8dee'],borderColor:'#161b27',borderWidth:2,hoverOffset:6}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{
+        legend:{display:true,position:'bottom',labels:{color:'#8b92a8',font:{size:11},usePointStyle:true,padding:14}},
+        tooltip:{enabled:false}
+      },
+      onHover:(e,el)=>{
+        const canvas=document.getElementById('ch-ren');
+        canvas.style.cursor=el.length?'pointer':'default';
+        if(el.length){
+          const lbl=['Open','Completed','Closed'][el[0].index];
+          const items=renMap[lbl]||[];
+          const tt=document.getElementById('chart-tooltip');
+          tt.style.display='block';
+          document.getElementById('ctt-label').textContent='Renewals — '+lbl+' ('+items.length+')';
+          document.getElementById('ctt-list').innerHTML=items.slice(0,8).map(r=>`<div>• ${r.process}</div>`).join('')+(items.length>8?`<div style="color:var(--accent)">+${items.length-8} more</div>`:'');
+          document.querySelector('#chart-tooltip div:last-child').style.display='none';
+          positionTip(e.native);
+        } else hideChartTip();
+      }
+    }
+  });
+}
+
+// ===================== INIT =====================
+loadState();
+renderProjects();
+renderAttendance();
+renderRenewals();
+renderPatch();
+rebuildCharts();
+
+// Hide tooltip when cursor leaves any chart canvas
+document.querySelectorAll('canvas').forEach(c=>{
+  c.addEventListener('mouseleave',()=>hideChartTip());
+});
+// Also hide when leaving chart cards
+document.querySelectorAll('.chart-card').forEach(c=>{
+  c.addEventListener('mouseleave',()=>hideChartTip());
+});
+</script>
+</body>
+</html>
