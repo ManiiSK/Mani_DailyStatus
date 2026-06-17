@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GBS Automation – Daily Status Dashboard June 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d3f;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8eaf6;--text2:#8b92a8;--text3:#4e5567;--accent:#5b8dee;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--teal:#14b8a6;--purple:#a855f7;--cyan:#06b6d4;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -129,9 +130,12 @@ textarea.inline-edit{resize:vertical;min-height:60px;line-height:1.45;}
 <div class="topbar">
   <div class="brand">GBS <em>Automation</em> Hub</div>
   <div class="topbar-right">
-    <span class="save-indicator" id="saveInd">✓ Saved</span>
+    <span id="syncInd" style="font-size:11px;display:flex;align-items:center;gap:5px;">
+      <span id="syncDot" style="width:7px;height:7px;border-radius:50%;background:var(--text3);display:inline-block;"></span>
+      <span id="syncMsg" style="color:var(--text3)">Connecting…</span>
+    </span>
     <button class="btn" onclick="resetToDefaults()">↺ Reset</button>
-    <button class="btn btn-primary" onclick="exportJSON()">⬇ Export JSON</button>
+    <button class="btn btn-primary" onclick="exportExcel()">⬇ Download Excel</button>
     <div class="date-badge">June 2026</div>
   </div>
 </div>
@@ -404,34 +408,216 @@ patches:[
 ]
 };
 
+// ===================== GITHUB CONFIG =====================
+const GH_USER   = 'ManiiSK';
+const GH_REPO   = 'Mani_DailyStatus';
+const GH_FILE   = 'data.json';
+const GH_BRANCH = 'main';
+const GH_API    = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+
+// Token is stored only in this browser's localStorage — never sent anywhere except GitHub API
+const TOKEN_KEY = 'gbs_gh_token';
+function getToken(){ return localStorage.getItem(TOKEN_KEY)||''; }
+function setToken(t){ localStorage.setItem(TOKEN_KEY,t.trim()); }
+
+// ===================== SYNC STATUS =====================
+function syncStatus(state, msg){
+  const dot=document.getElementById('syncDot');
+  const txt=document.getElementById('syncMsg');
+  txt.textContent=msg;
+  if(state==='ok'){dot.style.background='var(--green)';txt.style.color='var(--green)';}
+  else if(state==='saving'){dot.style.background='var(--yellow)';txt.style.color='var(--yellow)';}
+  else if(state==='error'){dot.style.background='var(--red)';txt.style.color='var(--red)';}
+  else{dot.style.background='var(--text3)';txt.style.color='var(--text3)';}
+}
+
 // ===================== STATE =====================
-const STORAGE_KEY = 'gbs_dashboard_v3';
 let STATE;
-function loadState(){
+let GH_SHA = ''; // tracks current file SHA for updates
+
+async function loadState(){
+  const token=getToken();
+  if(!token){
+    promptToken();
+    return;
+  }
+  syncStatus('saving','Loading…');
   try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(raw){STATE=JSON.parse(raw);return;}
+    const res=await fetch(GH_API+'?ref='+GH_BRANCH+'&t='+Date.now(),{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(res.status===404){
+      // File doesn't exist yet — first time setup, push defaults
+      STATE=JSON.parse(JSON.stringify(DEFAULT));
+      GH_SHA='';
+      await pushToGitHub('Initial data load');
+      syncStatus('ok','Live ✓');
+      initDashboard();
+      return;
+    }
+    if(res.status===401||res.status===403){
+      syncStatus('error','Token invalid');
+      promptToken('Token rejected by GitHub. Please enter a valid token:');
+      return;
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json=await res.json();
+    GH_SHA=json.sha;
+    const decoded=JSON.parse(atob(json.content.replace(/\n/g,'')));
+    STATE=decoded;
+    syncStatus('ok','Live ✓');
+    initDashboard();
+  }catch(e){
+    syncStatus('error','Load failed');
+    // Fall back to defaults so UI still works
+    STATE=JSON.parse(JSON.stringify(DEFAULT));
+    initDashboard();
+    alert('Could not load from GitHub: '+e.message+'\nRunning with default data locally.');
+  }
+}
+
+async function saveState(){
+  syncStatus('saving','Saving…');
+  const token=getToken();
+  if(!token){syncStatus('error','No token');promptToken();return;}
+  try{
+    await pushToGitHub('Dashboard update '+new Date().toISOString().slice(0,16));
+    syncStatus('ok','Saved ✓');
+    setTimeout(()=>syncStatus('ok','Live ✓'),2000);
+  }catch(e){
+    syncStatus('error','Save failed');
+    alert('Could not save to GitHub: '+e.message);
+  }
+}
+
+async function pushToGitHub(message){
+  const token=getToken();
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(STATE,null,2))));
+  const body={message,content,branch:GH_BRANCH};
+  if(GH_SHA) body.sha=GH_SHA;
+  const res=await fetch(GH_API,{
+    method:'PUT',
+    headers:{
+      'Authorization':'token '+token,
+      'Accept':'application/vnd.github.v3+json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(body)
+  });
+  if(!res.ok){
+    const err=await res.json();
+    // If SHA conflict, re-fetch and retry once
+    if(res.status===409||res.status===422){
+      await refreshSHA();
+      body.sha=GH_SHA;
+      const retry=await fetch(GH_API,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(!retry.ok) throw new Error('Conflict on retry');
+      const rd=await retry.json();
+      GH_SHA=rd.content.sha;
+      return;
+    }
+    throw new Error(err.message||'Push failed');
+  }
+  const data=await res.json();
+  GH_SHA=data.content.sha;
+}
+
+async function refreshSHA(){
+  const token=getToken();
+  const res=await fetch(GH_API+'?ref='+GH_BRANCH,{headers:{'Authorization':'token '+token}});
+  if(res.ok){const d=await res.json();GH_SHA=d.sha;}
+}
+
+// Pull latest from GitHub (used by auto-refresh)
+async function pullLatest(){
+  const token=getToken();
+  if(!token) return;
+  try{
+    const res=await fetch(GH_API+'?ref='+GH_BRANCH+'&t='+Date.now(),{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(!res.ok) return;
+    const json=await res.json();
+    if(json.sha===GH_SHA) return; // no changes
+    GH_SHA=json.sha;
+    STATE=JSON.parse(atob(json.content.replace(/\n/g,'')));
+    renderProjects(); renderAttendance(); renderRenewals(); renderPatch(); rebuildCharts();
+    syncStatus('ok','Updated ✓');
+    setTimeout(()=>syncStatus('ok','Live ✓'),2000);
   }catch(e){}
-  STATE=JSON.parse(JSON.stringify(DEFAULT));
 }
-function saveState(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(STATE));
-  const ind=document.getElementById('saveInd');
-  ind.classList.add('show');
-  clearTimeout(ind._t);
-  ind._t=setTimeout(()=>ind.classList.remove('show'),1800);
+
+// Auto-refresh every 30 seconds to pick up other people's changes
+setInterval(pullLatest, 30000);
+
+// ===================== TOKEN PROMPT =====================
+function promptToken(msg){
+  const existing=getToken();
+  const t=prompt(
+    (msg||'Enter your GitHub Personal Access Token to connect live data.\n\nCreate one at: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)\nScope needed: repo')+
+    (existing?'\n\nCurrent token is set (leave blank to keep it)':''),
+    ''
+  );
+  if(t===null) return; // cancelled
+  if(t.trim()){
+    setToken(t.trim());
+    location.reload();
+  }
 }
+
 function resetToDefaults(){
-  if(!confirm('Reset ALL data to original defaults? This will erase all your edits.'))return;
+  if(!confirm('Reset ALL data to original defaults? This will overwrite the live GitHub data for everyone.'))return;
   STATE=JSON.parse(JSON.stringify(DEFAULT));
-  saveState();
-  location.reload();
+  GH_SHA='';
+  saveState().then(()=>location.reload());
 }
-function exportJSON(){
-  const blob=new Blob([JSON.stringify(STATE,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='gbs_dashboard_'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
+
+// ===================== INIT =====================
+function initDashboard(){
+  renderProjects();
+  renderAttendance();
+  renderRenewals();
+  renderPatch();
+  rebuildCharts();
+}
+function exportExcel(){
+  if(typeof XLSX==='undefined'){alert('Excel library not loaded yet, please wait a moment and try again.');return;}
+  const wb=XLSX.utils.book_new();
+
+  // ---- Sheet 1: Projects ----
+  const projHeaders=['No','Process Name','Status','Champion','Architect','Dev 1','Dev 2','BA','ETA','Latest Comment'];
+  const projRows=STATE.projects.map((p,i)=>[p.no||i+1,p.name,p.status,p.champion,p.arch,p.dev1,p.dev2,p.ba,p.eta,p.comment]);
+  const wsProj=XLSX.utils.aoa_to_sheet([projHeaders,...projRows]);
+  wsProj['!cols']=[{wch:5},{wch:40},{wch:18},{wch:14},{wch:14},{wch:14},{wch:14},{wch:12},{wch:14},{wch:80}];
+  XLSX.utils.book_append_sheet(wb,wsProj,'Projects');
+
+  // ---- Sheet 2: Attendance ----
+  if(STATE.attendance.length){
+    const days=Object.keys(STATE.attendance[0].days);
+    const attHeaders=['Name',...days];
+    const attRows=STATE.attendance.map(m=>[m.name,...days.map(d=>m.days[d]||'')]);
+    const wsAtt=XLSX.utils.aoa_to_sheet([attHeaders,...attRows]);
+    wsAtt['!cols']=[{wch:18},...days.map(()=>({wch:14}))];
+    XLSX.utils.book_append_sheet(wb,wsAtt,'Attendance');
+  }
+
+  // ---- Sheet 3: Renewals ----
+  const renHeaders=['#','Process / Certificate','Environment','Expiry Date','Status','POC'];
+  const renRows=STATE.renewals.map((r,i)=>[i+1,r.process,r.env,r.expiry,r.status,r.poc]);
+  const wsRen=XLSX.utils.aoa_to_sheet([renHeaders,...renRows]);
+  wsRen['!cols']=[{wch:5},{wch:40},{wch:18},{wch:14},{wch:12},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,wsRen,'Renewals');
+
+  // ---- Sheet 4: Patch Schedule ----
+  const ptHeaders=['#','Period','Date','Developer','Reviewer','Validation Status'];
+  const ptRows=STATE.patches.map((p,i)=>[i+1,p.period,p.date,p.dev,p.reviewer,p.vstatus]);
+  const wsPt=XLSX.utils.aoa_to_sheet([ptHeaders,...ptRows]);
+  wsPt['!cols']=[{wch:5},{wch:12},{wch:14},{wch:16},{wch:16},{wch:18}];
+  XLSX.utils.book_append_sheet(wb,wsPt,'Patch Schedule');
+
+  // ---- Download ----
+  const date=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb,'GBS_Dashboard_'+date+'.xlsx');
 }
 
 // ===================== TABS =====================
@@ -1009,21 +1195,16 @@ function rebuildCharts(){
 }
 
 // ===================== INIT =====================
-loadState();
-renderProjects();
-renderAttendance();
-renderRenewals();
-renderPatch();
-rebuildCharts();
-
 // Hide tooltip when cursor leaves any chart canvas
 document.querySelectorAll('canvas').forEach(c=>{
   c.addEventListener('mouseleave',()=>hideChartTip());
 });
-// Also hide when leaving chart cards
 document.querySelectorAll('.chart-card').forEach(c=>{
   c.addEventListener('mouseleave',()=>hideChartTip());
 });
+
+// Boot — loads from GitHub, then calls initDashboard()
+loadState();
 </script>
 </body>
 </html>
