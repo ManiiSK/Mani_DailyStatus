@@ -1,0 +1,1115 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "no": "1",
+      "name": "Client Timesheet Integration",
+      "status": "F.Prod (CR)",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Suresh",
+      "dev2": "Kiruba Sri",
+      "ba": "Ramesh",
+      "eta": "",
+      "comment": "» 04/13 - Bot is moved to full prod, awaiting for Go Live Mail.\n» Project GoLive Mail is pending."
+    },
+    {
+      "id": 2,
+      "no": "2",
+      "name": "Snow Automation",
+      "status": "UAT",
+      "champion": "Sreenikethan",
+      "arch": "Esakki/Asalam",
+      "dev1": "Alphy",
+      "dev2": "Suresh",
+      "ba": "Dinesh",
+      "eta": "24th Apr'26",
+      "comment": "» 06/17 - Call held with Biz on 16th Jun'26, observations shared by Biz which need to be fixed."
+    },
+    {
+      "id": 3,
+      "no": "3",
+      "name": "ICD Contract Creation E-mail Follow-up",
+      "status": "Dev",
+      "champion": "Harini",
+      "arch": "Asalam",
+      "dev1": "Kiruba Sri",
+      "dev2": "Deepti",
+      "ba": "Ramesh",
+      "eta": "22nd Jun'26",
+      "comment": "» 06/17 - (Kiruba Sri) Call scheduled with Biz on 22nd Jun'26 for S.Prod.\n(Deepti) Dev working on W@R report. Completion - 45%."
+    },
+    {
+      "id": 4,
+      "no": "4",
+      "name": "Direct Invoices - Invoice Finalization (Phase2)",
+      "status": "UAT",
+      "champion": "Harini",
+      "arch": "Giri",
+      "dev1": "Abinaya",
+      "dev2": "Neelima",
+      "ba": "Dinesh",
+      "eta": "5th May'26",
+      "comment": "» 06/17 - 2nd UAT run completed on 15th Jun'26. Hold cases received, faced bug in Hold Bot, to be fixed."
+    },
+    {
+      "id": 5,
+      "no": "5",
+      "name": "Client Timesheet Integration - Field Glass",
+      "status": "Dev",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Suresh",
+      "dev2": "Priyanka",
+      "ba": "Ramesh",
+      "eta": "7th Aug'26",
+      "comment": "» 06/17 - Inputs shared by Biz on 11th Jun'26, code changes to be updated for few divisions. IDR Report Downloader - 2%."
+    },
+    {
+      "id": 6,
+      "no": "6",
+      "name": "Invoice Finalization - CR",
+      "status": "UAT (CR)",
+      "champion": "Harini",
+      "arch": "Giri",
+      "dev1": "Neelima",
+      "dev2": "",
+      "ba": "Dinesh",
+      "eta": "16th Apr'26",
+      "comment": "» 06/17 - Prod Dep Doc shared on 10th Jun'26. Awaiting for SVN access. S.Prod planned from 15th Jun'26."
+    },
+    {
+      "id": 7,
+      "no": "7",
+      "name": "Short Billing Process",
+      "status": "Dev",
+      "champion": "Harini",
+      "arch": "Giri",
+      "dev1": "Kiruba Sri",
+      "dev2": "Lavanyaa",
+      "ba": "Priya",
+      "eta": "17th Jul'26",
+      "comment": "» 06/17 - Kiruba Sri Completion - 10%. Lavanyaa - Dev started on 15th Jun'26."
+    },
+    {
+      "id": 8,
+      "no": "8",
+      "name": "AP Pay Cycle - India Region",
+      "status": "UAT",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Mohan",
+      "dev2": "Kaviarasan",
+      "ba": "Ramesh",
+      "eta": "3rd Jun'26",
+      "comment": "» 06/17 - Dev Completion - Mohan - 95%, UTC shared on 16th Jun'26. UAT is in progress."
+    },
+    {
+      "id": 9,
+      "no": "9",
+      "name": "SOX Automation IT controls - CR",
+      "status": "UAT (CR)",
+      "champion": "Venkat",
+      "arch": "Giri",
+      "dev1": "Mani B",
+      "dev2": "",
+      "ba": "Dinesh",
+      "eta": "4/30/2026",
+      "comment": "» 06/17 - Prod dep completed on 12th Jun'26. Artifacts to be reviewed. Awaiting for inputs for Prod Dry run."
+    },
+    {
+      "id": 10,
+      "no": "10",
+      "name": "Peoplesoft ESA & other Reports",
+      "status": "Dev",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Manikanda",
+      "dev2": "Santhiya",
+      "ba": "Dinesh",
+      "eta": "19th Jun'26",
+      "comment": "» 06/17 - Dispatcher Completion - 90%. Downloader Bot Completion - 85%."
+    },
+    {
+      "id": 11,
+      "no": "11",
+      "name": "CMTR Scale Up - CR",
+      "status": "Dev",
+      "champion": "Venkat",
+      "arch": "Giri",
+      "dev1": "Mohan",
+      "dev2": "TBD",
+      "ba": "Dinesh",
+      "eta": "22nd May'26",
+      "comment": "» 06/17 - UAT Sign-off received on 16th Jun'26. Prod Dep Doc to be shared on 17th Jun'26."
+    },
+    {
+      "id": 12,
+      "no": "12",
+      "name": "Intercompany Letter - CR",
+      "status": "Dev (CR)",
+      "champion": "Harini",
+      "arch": "Asalam",
+      "dev1": "Vignesh",
+      "dev2": "",
+      "ba": "Ramesh",
+      "eta": "",
+      "comment": "» 06/17 - Dev Completion - 50%. CR Document approval received on 11th Jun'26. WBS to be shared on 15th Jun'26."
+    },
+    {
+      "id": 13,
+      "no": "13",
+      "name": "T&E Email BOT - POC",
+      "status": "Req",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Mani B",
+      "dev2": "",
+      "ba": "TBD",
+      "eta": "",
+      "comment": "» 06/11 - Mail sent to Wintel team for Url access."
+    },
+    {
+      "id": 14,
+      "no": "14",
+      "name": "US Tax Returns Workings",
+      "status": "Req",
+      "champion": "Venkat",
+      "arch": "Asalam",
+      "dev1": "TBD",
+      "dev2": "TBD",
+      "ba": "Ramesh",
+      "eta": "",
+      "comment": "» 06/17 - Call to be scheduled with Biz to capture Base Amt logic. BRD is in progress."
+    },
+    {
+      "id": 15,
+      "no": "15",
+      "name": "AP Pay Cycle - APAC Region",
+      "status": "Design",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Mohan",
+      "dev2": "Kaviarasan",
+      "ba": "Ramesh",
+      "eta": "",
+      "comment": "» 06/17 - BRD Sign-off received on 12th Jun'26. Updated BRD shared with Biz on 16th Jun'26 for approval."
+    },
+    {
+      "id": 16,
+      "no": "16",
+      "name": "Revenue Reserves",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Mohan",
+      "dev2": "",
+      "ba": "",
+      "eta": "2nd Apr'26",
+      "comment": "» Awaiting for WM CR."
+    },
+    {
+      "id": 17,
+      "no": "17",
+      "name": "LTA - TS Recon",
+      "status": "WM",
+      "champion": "Harini",
+      "arch": "Narasi",
+      "dev1": "Priyanka",
+      "dev2": "",
+      "ba": "",
+      "eta": "2nd Apr'26",
+      "comment": "» UAT Dep completed. Prod Dep is pending from Architect."
+    },
+    {
+      "id": 18,
+      "no": "18",
+      "name": "Amex Clearance - CE",
+      "status": "WM",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Alphy",
+      "dev2": "Santhiya",
+      "ba": "",
+      "eta": "TBD",
+      "comment": "» Code changes required. Awaiting for Process CR."
+    },
+    {
+      "id": 19,
+      "no": "19",
+      "name": "Amex Clearance - NA Phase I",
+      "status": "WM",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Alphy",
+      "dev2": "Santhiya",
+      "ba": "",
+      "eta": "TBD",
+      "comment": "» Code changes required. Awaiting for Process CR."
+    },
+    {
+      "id": 20,
+      "no": "20",
+      "name": "Amex Clearance - NA Phase II",
+      "status": "Hold",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Alphy",
+      "dev2": "Santhiya",
+      "ba": "",
+      "eta": "TBD",
+      "comment": "» On hold. Awaiting for Process CR."
+    },
+    {
+      "id": 21,
+      "no": "21",
+      "name": "Amex Clearance - UK (Priority)",
+      "status": "WM",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Alphy",
+      "dev2": "Santhiya",
+      "ba": "",
+      "eta": "TBD",
+      "comment": "» Testing is in progress. Awaiting for biz inputs."
+    },
+    {
+      "id": 22,
+      "no": "22",
+      "name": "Variable Consideration",
+      "status": "WM",
+      "champion": "Venkat",
+      "arch": "Giri",
+      "dev1": "Neelima",
+      "dev2": "",
+      "ba": "",
+      "eta": "24th Apr'26",
+      "comment": "» 06/17 - 1st run Results shared on 16th Jun'26. Test data received for 2nd run, results to be shared."
+    },
+    {
+      "id": 23,
+      "no": "23",
+      "name": "External Invoice Circulation",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Esakki",
+      "dev2": "",
+      "ba": "",
+      "eta": "3rd Apr'26",
+      "comment": "» UAT Dep Doc completed. Prod Dep will be initiated after CR is raised."
+    },
+    {
+      "id": 24,
+      "no": "24",
+      "name": "US Payroll Supplemental Process",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "Giri",
+      "dev1": "Mani B",
+      "dev2": "",
+      "ba": "",
+      "eta": "6th Apr'26",
+      "comment": "» UAT Testing completed. Dep pending from Architect."
+    },
+    {
+      "id": 25,
+      "no": "25",
+      "name": "Payroll & HCM",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "",
+      "dev1": "Vignesh",
+      "dev2": "",
+      "ba": "",
+      "eta": "2nd Apr'26",
+      "comment": "» UAT Dep completed. Prod Dep is pending."
+    },
+    {
+      "id": 26,
+      "no": "26",
+      "name": "AR Cash",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "",
+      "dev1": "Vignesh",
+      "dev2": "",
+      "ba": "",
+      "eta": "TBD",
+      "comment": ""
+    },
+    {
+      "id": 27,
+      "no": "27",
+      "name": "PS ESA - EMEA & APAC",
+      "status": "WM",
+      "champion": "Sreenikethan",
+      "arch": "Giri",
+      "dev1": "Manikanda",
+      "dev2": "Santhiya",
+      "ba": "",
+      "eta": "18th Apr'26",
+      "comment": "» Waiting for CR number. PUT ON HOLD."
+    },
+    {
+      "id": 28,
+      "no": "28",
+      "name": "Payroll Accounting UK CE",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "Esakki",
+      "dev1": "Santhiya",
+      "dev2": "",
+      "ba": "",
+      "eta": "15th Apr'26",
+      "comment": "» UAT Sign-off received on 15th May'26. Prod Dep pending."
+    },
+    {
+      "id": 29,
+      "no": "29",
+      "name": "Revenue Reporting - 1 & 2",
+      "status": "WM",
+      "champion": "Ram",
+      "arch": "Esakki",
+      "dev1": "Deepti",
+      "dev2": "",
+      "ba": "",
+      "eta": "15th Apr'26",
+      "comment": "» Awaiting for UAT Sign-off. Prod Dep Doc shared on 24th Apr'26."
+    }
+  ],
+  "attendance": [
+    {
+      "name": "Abinaya",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Unavailable",
+        "June 2nd": "Unavailable",
+        "June 3rd": "Unavailable",
+        "June 4th": "Leave",
+        "June 5th": "ML",
+        "June 8th": "ML",
+        "June 9th": "ML",
+        "June 10th": "ML",
+        "June 11th": "ML",
+        "June 12th": "ML",
+        "June 15th": "ML",
+        "June 16th": "ML",
+        "June 17th": "ML",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Alphy",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Unavailable (i)",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Unavailable (i)",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Asalam",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Dinesh",
+      "days": {
+        "May 29th": "Leave",
+        "June 1st": "Leave",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Deepti",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Unavailable",
+        "June 8th": "Unavailable (i)",
+        "June 9th": "Yes",
+        "June 10th": "Unavailable",
+        "June 11th": "Yes",
+        "June 12th": "Unavailable",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Esakki",
+      "days": {
+        "May 29th": "Unavailable (i)",
+        "June 1st": "Unavailable",
+        "June 2nd": "Leave",
+        "June 3rd": "Leave",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Leave",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Giri",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Unavailable",
+        "June 10th": "Unavailable",
+        "June 11th": "Leave",
+        "June 12th": "Leave",
+        "June 15th": "Unavailable (i)",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Harini",
+      "days": {
+        "May 29th": "Unavailable",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Unavailable",
+        "June 4th": "Yes",
+        "June 5th": "Leave",
+        "June 8th": "Yes",
+        "June 9th": "Unavailable (i)",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Unavailable (i)",
+        "June 17th": "Unavailable (i)",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Kaviarasan",
+      "days": {
+        "May 29th": "Unavailable (i)",
+        "June 1st": "Yes",
+        "June 2nd": "Unavailable",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Unavailable (i)",
+        "June 8th": "Unavailable (i)",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Kiruba Sri",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Leave",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Leave",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Lavanyaa K",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Unavailable (i)",
+        "June 3rd": "Yes",
+        "June 4th": "Leave",
+        "June 5th": "Leave",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Unavailable",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Unavailable (i)",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Mani B",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Unavailable (i)",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Unavailable (i)",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Unavailable (i)",
+        "June 15th": "Unavailable (i)",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Manikanda",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Mohan",
+      "days": {
+        "May 29th": "Unavailable",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Neelima",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Leave",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Unavailable (i)",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Unavailable (i)",
+        "June 15th": "Yes",
+        "June 16th": "Unavailable",
+        "June 17th": "Unavailable (i)",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Priya D'Silva",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Unavailable (i)",
+        "June 3rd": "Yes",
+        "June 4th": "Unavailable (i)",
+        "June 5th": "Yes",
+        "June 8th": "Unavailable (i)",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Leave",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Priyanka",
+      "days": {
+        "May 29th": "Leave",
+        "June 1st": "Leave",
+        "June 2nd": "Leave",
+        "June 3rd": "Leave",
+        "June 4th": "Leave",
+        "June 5th": "Leave",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Unavailable (i)",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Ram",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Unavailable (i)",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Unavailable (i)",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Ramesh",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Leave",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Leave",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Santhiya",
+      "days": {
+        "May 29th": "Leave",
+        "June 1st": "Leave",
+        "June 2nd": "Leave",
+        "June 3rd": "Leave",
+        "June 4th": "Leave",
+        "June 5th": "Leave",
+        "June 8th": "Leave",
+        "June 9th": "Leave",
+        "June 10th": "Leave",
+        "June 11th": "Leave",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Sreenikethan",
+      "days": {
+        "May 29th": "Unavailable",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Unavailable",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Suresh",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Venkatraman",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Yes",
+        "June 9th": "Yes",
+        "June 10th": "Yes",
+        "June 11th": "Yes",
+        "June 12th": "Yes",
+        "June 15th": "Yes",
+        "June 16th": "Yes",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    },
+    {
+      "name": "Vignesh",
+      "days": {
+        "May 29th": "Yes",
+        "June 1st": "Yes",
+        "June 2nd": "Yes",
+        "June 3rd": "Yes",
+        "June 4th": "Yes",
+        "June 5th": "Yes",
+        "June 8th": "Unavailable (i)",
+        "June 9th": "Yes",
+        "June 10th": "Leave",
+        "June 11th": "Leave",
+        "June 12th": "Unavailable",
+        "June 15th": "Yes",
+        "June 16th": "Leave",
+        "June 17th": "Yes",
+        "June 18th": ""
+      }
+    }
+  ],
+  "renewals": [
+    {
+      "id": 1,
+      "process": "AMEX API Certificate",
+      "env": "Prod",
+      "expiry": "2026-05-22",
+      "status": "Open",
+      "poc": "Mohan"
+    },
+    {
+      "id": 2,
+      "process": "Saas_RPAO365_Uipath",
+      "env": "Dev/UAT/Prod",
+      "expiry": "2026-06-07",
+      "status": "Open",
+      "poc": "Giri"
+    },
+    {
+      "id": 3,
+      "process": "Network Maintenance Activity",
+      "env": "Dev/UAT/Prod",
+      "expiry": "2026-06-20",
+      "status": "Open",
+      "poc": "Giri"
+    },
+    {
+      "id": 4,
+      "process": "SFTP Account Renewal",
+      "env": "Dev/UAT/Prod",
+      "expiry": "2026-07-04",
+      "status": "Open",
+      "poc": "Esakki"
+    },
+    {
+      "id": 5,
+      "process": "Quarterly DB Archival",
+      "env": "Prod",
+      "expiry": "2026-07-08",
+      "status": "Open",
+      "poc": "Asalam"
+    },
+    {
+      "id": 6,
+      "process": "AMEX API Certificate",
+      "env": "UAT",
+      "expiry": "2026-09-12",
+      "status": "Open",
+      "poc": "Mohan"
+    },
+    {
+      "id": 7,
+      "process": "PCOE Chat BOT Certificate Renewal",
+      "env": "Prod",
+      "expiry": "2027-01-06",
+      "status": "Open",
+      "poc": "Esakki"
+    },
+    {
+      "id": 8,
+      "process": "Orchestrator Certificate Renewal",
+      "env": "Dev",
+      "expiry": "2028-03-02",
+      "status": "Open",
+      "poc": "Giri"
+    },
+    {
+      "id": 9,
+      "process": "Orchestrator Certificate Renewal",
+      "env": "Prod/UAT",
+      "expiry": "2026-05-05",
+      "status": "Completed",
+      "poc": "Giri"
+    },
+    {
+      "id": 10,
+      "process": "SFTP Account Renewal",
+      "env": "Dev/UAT/Prod",
+      "expiry": "2026-05-09",
+      "status": "Completed",
+      "poc": "Esakki"
+    },
+    {
+      "id": 11,
+      "process": "POE Chat BOT Azure API Secret Key",
+      "env": "Prod",
+      "expiry": "2026-05-27",
+      "status": "Completed",
+      "poc": "Esakki"
+    },
+    {
+      "id": 12,
+      "process": "Procurement Chat BOT Certificate Renewal",
+      "env": "Prod",
+      "expiry": "2025-06-26",
+      "status": "Completed",
+      "poc": "Esakki"
+    },
+    {
+      "id": 13,
+      "process": "AMEX API Certificate",
+      "env": "Prod",
+      "expiry": "2025-05-21",
+      "status": "Completed",
+      "poc": "Karthik"
+    },
+    {
+      "id": 14,
+      "process": "idcs.gbsfinanacoe.cognizant.com",
+      "env": "Prod",
+      "expiry": "2026-06-14",
+      "status": "Closed",
+      "poc": "Vignesh"
+    },
+    {
+      "id": 15,
+      "process": "SFTP Account Renewal",
+      "env": "Dev/UAT/Prod",
+      "expiry": "2026-06-09",
+      "status": "Closed",
+      "poc": "Esakki"
+    }
+  ],
+  "patches": [
+    {
+      "id": 1,
+      "period": "Jan-2025",
+      "date": "2025-01-25",
+      "dev": "Thusitha",
+      "reviewer": "Karthik",
+      "vstatus": "Failure"
+    },
+    {
+      "id": 2,
+      "period": "Feb-2025",
+      "date": "2025-02-22",
+      "dev": "Suresh",
+      "reviewer": "Esakki",
+      "vstatus": "Success"
+    },
+    {
+      "id": 3,
+      "period": "Mar-2025",
+      "date": "2025-03-29",
+      "dev": "Priyanka",
+      "reviewer": "Esakki",
+      "vstatus": "Success"
+    },
+    {
+      "id": 4,
+      "period": "May-2025",
+      "date": "2025-05-24",
+      "dev": "Santhiya",
+      "reviewer": "Karthik",
+      "vstatus": "Success"
+    },
+    {
+      "id": 5,
+      "period": "Jun-2025",
+      "date": "2025-06-21",
+      "dev": "Manikanda",
+      "reviewer": "Giri",
+      "vstatus": "Success"
+    },
+    {
+      "id": 6,
+      "period": "Jul-2025",
+      "date": "2025-07-19",
+      "dev": "Abinaya",
+      "reviewer": "Esakki",
+      "vstatus": "Success"
+    },
+    {
+      "id": 7,
+      "period": "Aug-2025",
+      "date": "2025-08-30",
+      "dev": "Kaviarasan",
+      "reviewer": "Asalam",
+      "vstatus": "Failure"
+    },
+    {
+      "id": 8,
+      "period": "Sep-2025",
+      "date": "2025-09-20",
+      "dev": "Neelima",
+      "reviewer": "Dinesh",
+      "vstatus": "Success"
+    },
+    {
+      "id": 9,
+      "period": "Oct-2025",
+      "date": "2025-10-25",
+      "dev": "Alphy",
+      "reviewer": "Priya",
+      "vstatus": "Success"
+    },
+    {
+      "id": 10,
+      "period": "Nov-2025",
+      "date": "2025-11-22",
+      "dev": "Mohan",
+      "reviewer": "Sreenikethan",
+      "vstatus": "Success"
+    },
+    {
+      "id": 11,
+      "period": "Jan-2026",
+      "date": "2026-01-24",
+      "dev": "Kiruba",
+      "reviewer": "Harini",
+      "vstatus": "Success"
+    },
+    {
+      "id": 12,
+      "period": "Feb-2026",
+      "date": "2026-02-21",
+      "dev": "Deepti",
+      "reviewer": "Ramesh",
+      "vstatus": "Success"
+    },
+    {
+      "id": 13,
+      "period": "Mar-2026",
+      "date": "2026-03-21",
+      "dev": "Mani Bose",
+      "reviewer": "Giri",
+      "vstatus": "Success"
+    },
+    {
+      "id": 14,
+      "period": "Apr-2026",
+      "date": "2026-04-25",
+      "dev": "Vignesh",
+      "reviewer": "Giri",
+      "vstatus": "Success"
+    },
+    {
+      "id": 15,
+      "period": "May-2026",
+      "date": "2026-05-23",
+      "dev": "Abinaya",
+      "reviewer": "Asalam",
+      "vstatus": "Pending"
+    },
+    {
+      "id": 16,
+      "period": "Jun-2026",
+      "date": "2026-06-21",
+      "dev": "",
+      "reviewer": "",
+      "vstatus": "Pending"
+    }
+  ]
+}
