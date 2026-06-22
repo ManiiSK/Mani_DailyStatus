@@ -11,7 +11,7 @@
       "dev2": "Kiruba Sri",
       "ba": "Ramesh",
       "eta": "",
-      "comment": "Â» 04/13 - Bot is moved to full prod, awaiting for Go Live Mail.\nÂ» Project GoLive Mail is pending."
+      "comment": "ÃÂ» 04/13 - Bot is moved to full prod, awaiting for Go Live Mail.\nÃÂ» Project GoLive Mail is pending."
     },
     {
       "id": 2,
@@ -24,7 +24,7 @@
       "dev2": "Suresh",
       "ba": "Dinesh",
       "eta": "24th Apr'26",
-      "comment": "Â» 06/17 - Call held with Biz on 16th Jun'26, observations shared by Biz which need to be fixed."
+      "comment": "ÃÂ» 06/17 - Call held with Biz on 16th Jun'26, observations shared by Biz which need to be fixed."
     },
     {
       "id": 3,
@@ -37,7 +37,7 @@
       "dev2": "Deepti",
       "ba": "Ramesh",
       "eta": "22nd Jun'26",
-      "comment": "Â» 06/17 - (Kiruba Sri) Call scheduled with Biz on 22nd Jun'26 for S.Prod.\n(Deepti) Dev working on W@R report. Completion - 45%."
+      "comment": "ÃÂ» 06/17 - (Kiruba Sri) Call scheduled with Biz on 22nd Jun'26 for S.Prod.\n(Deepti) Dev working on W@R report. Completion - 45%."
     },
     {
       "id": 4,
@@ -50,7 +50,7 @@
       "dev2": "Neelima",
       "ba": "Dinesh",
       "eta": "5th May'26",
-      "comment": "Â» 06/17 - 2nd UAT run completed on 15th Jun'26. Hold cases received, faced bug in Hold Bot, to be fixed."
+      "comment": "ÃÂ» 06/17 - 2nd UAT run completed on 15th Jun'26. Hold cases received, faced bug in Hold Bot, to be fixed."
     },
     {
       "id": 5,
@@ -63,7 +63,7 @@
       "dev2": "Priyanka",
       "ba": "Ramesh",
       "eta": "7th Aug'26",
-      "comment": "Â» 06/17 - Inputs shared by Biz on 11th Jun'26, code changes to be updated for few divisions. IDR Report Downloader - 2%."
+      "comment": "ÃÂ» 06/17 - Inputs shared by Biz on 11th Jun'26, code changes to be updated for few divisions. IDR Report Downloader - 2%."
     },
     {
       "id": 6,
@@ -76,7 +76,7 @@
       "dev2": "",
       "ba": "Dinesh",
       "eta": "16th Apr'26",
-      "comment": "Â» 06/17 - Prod Dep Doc shared on 10th Jun'26. Awaiting for SVN access. S.Prod planned from 15th Jun'26."
+      "comment": "ÃÂ» 06/17 - Prod Dep Doc shared on 10th Jun'26. Awaiting for SVN access. S.Prod planned from 15th Jun'26."
     },
     {
       "id": 7,
@@ -89,7 +89,7 @@
       "dev2": "Lavanyaa",
       "ba": "Priya",
       "eta": "17th Jul'26",
-      "comment": "Â» 06/17 - Kiruba Sri Completion - 10%. Lavanyaa - Dev started on 15th Jun'26."
+      "comment": "ÃÂ» 06/17 - Kiruba Sri Completion - 10%. Lavanyaa - Dev started on 15th Jun'26."
     },
     {
       "id": 8,
@@ -102,7 +102,7 @@
       "dev2": "Kaviarasan",
       "ba": "Ramesh",
       "eta": "3rd Jun'26",
-      "comment": "Â» 06/17 - Dev Completion - Mohan - 95%, UTC shared on 16th Jun'26. UAT is in progress."
+      "comment": "ÃÂ» 06/17 - Dev Completion - Mohan - 95%, UTC shared on 16th Jun'26. UAT is in progress."
     },
     {
       "id": 9,
@@ -115,7 +115,7 @@
       "dev2": "",
       "ba": "Dinesh",
       "eta": "4/30/2026",
-      "comment": "Â» 06/17 - Prod dep completed on 12th Jun'26. Artifacts to be reviewed. Awaiting for inputs for Prod Dry run."
+      "comment": "ÃÂ» 06/17 - Prod dep completed on 12th Jun'26. Artifacts to be reviewed. Awaiting for inputs for Prod Dry run."
     },
     {
       "id": 10,
@@ -128,7 +128,7 @@
       "dev2": "Santhiya",
       "ba": "Dinesh",
       "eta": "19th Jun'26",
-      "comment": "Â» 06/17 - Dispatcher Completion - 90%. Downloader Bot Completion - 85%."
+      "comment": "ÃÂ» 06/17 - Dispatcher Completion - 90%. Downloader Bot Completion - 85%."
     },
     {
       "id": 11,
@@ -141,7 +141,7 @@
       "dev2": "TBD",
       "ba": "Dinesh",
       "eta": "22nd May'26",
-      "comment": "Â» 06/17 - UAT Sign-off received on 16th Jun'26. Prod Dep Doc to be shared on 17th Jun'26."
+      "comment": "ÃÂ» 06/17 - UAT Sign-off received on 16th Jun'26. Prod Dep Doc to be shared on 17th Jun'26."
     },
     {
       "id": 12,
@@ -154,7 +154,7 @@
       "dev2": "",
       "ba": "Ramesh",
       "eta": "",
-      "comment": "Â» 06/17 - Dev Completion - 50%. CR Document approval received on 11th Jun'26. WBS to be shared on 15th Jun'26."
+      "comment": "ÃÂ» 06/17 - Dev Completion - 50%. CR Document approval received on 11th Jun'26. WBS to be shared on 15th Jun'26."
     },
     {
       "id": 13,
@@ -167,7 +167,7 @@
       "dev2": "",
       "ba": "TBD",
       "eta": "",
-      "comment": "Â» 06/11 - Mail sent to Wintel team for Url access."
+      "comment": "ÃÂ» 06/11 - Mail sent to Wintel team for Url access."
     },
     {
       "id": 14,
@@ -180,7 +180,7 @@
       "dev2": "TBD",
       "ba": "Ramesh",
       "eta": "",
-      "comment": "Â» 06/17 - Call to be scheduled with Biz to capture Base Amt logic. BRD is in progress."
+      "comment": "ÃÂ» 06/17 - Call to be scheduled with Biz to capture Base Amt logic. BRD is in progress."
     },
     {
       "id": 15,
@@ -193,7 +193,7 @@
       "dev2": "Kaviarasan",
       "ba": "Ramesh",
       "eta": "",
-      "comment": "Â» 06/17 - BRD Sign-off received on 12th Jun'26. Updated BRD shared with Biz on 16th Jun'26 for approval."
+      "comment": "ÃÂ» 06/17 - BRD Sign-off received on 12th Jun'26. Updated BRD shared with Biz on 16th Jun'26 for approval."
     },
     {
       "id": 16,
@@ -206,7 +206,7 @@
       "dev2": "",
       "ba": "",
       "eta": "2nd Apr'26",
-      "comment": "Â» Awaiting for WM CR."
+      "comment": "ÃÂ» Awaiting for WM CR."
     },
     {
       "id": 17,
@@ -219,7 +219,7 @@
       "dev2": "",
       "ba": "",
       "eta": "2nd Apr'26",
-      "comment": "Â» UAT Dep completed. Prod Dep is pending from Architect."
+      "comment": "ÃÂ» UAT Dep completed. Prod Dep is pending from Architect."
     },
     {
       "id": 18,
@@ -232,7 +232,7 @@
       "dev2": "Santhiya",
       "ba": "",
       "eta": "TBD",
-      "comment": "Â» Code changes required. Awaiting for Process CR."
+      "comment": "ÃÂ» Code changes required. Awaiting for Process CR."
     },
     {
       "id": 19,
@@ -245,7 +245,7 @@
       "dev2": "Santhiya",
       "ba": "",
       "eta": "TBD",
-      "comment": "Â» Code changes required. Awaiting for Process CR."
+      "comment": "ÃÂ» Code changes required. Awaiting for Process CR."
     },
     {
       "id": 20,
@@ -258,7 +258,7 @@
       "dev2": "Santhiya",
       "ba": "",
       "eta": "TBD",
-      "comment": "Â» On hold. Awaiting for Process CR."
+      "comment": "ÃÂ» On hold. Awaiting for Process CR."
     },
     {
       "id": 21,
@@ -271,7 +271,7 @@
       "dev2": "Santhiya",
       "ba": "",
       "eta": "TBD",
-      "comment": "Â» Testing is in progress. Awaiting for biz inputs."
+      "comment": "ÃÂ» Testing is in progress. Awaiting for biz inputs."
     },
     {
       "id": 22,
@@ -284,7 +284,7 @@
       "dev2": "",
       "ba": "",
       "eta": "24th Apr'26",
-      "comment": "Â» 06/17 - 1st run Results shared on 16th Jun'26. Test data received for 2nd run, results to be shared."
+      "comment": "ÃÂ» 06/17 - 1st run Results shared on 16th Jun'26. Test data received for 2nd run, results to be shared."
     },
     {
       "id": 23,
@@ -297,7 +297,7 @@
       "dev2": "",
       "ba": "",
       "eta": "3rd Apr'26",
-      "comment": "Â» UAT Dep Doc completed. Prod Dep will be initiated after CR is raised."
+      "comment": "ÃÂ» UAT Dep Doc completed. Prod Dep will be initiated after CR is raised."
     },
     {
       "id": 24,
@@ -310,7 +310,7 @@
       "dev2": "",
       "ba": "",
       "eta": "6th Apr'26",
-      "comment": "Â» UAT Testing completed. Dep pending from Architect."
+      "comment": "ÃÂ» UAT Testing completed. Dep pending from Architect."
     },
     {
       "id": 25,
@@ -323,7 +323,7 @@
       "dev2": "",
       "ba": "",
       "eta": "2nd Apr'26",
-      "comment": "Â» UAT Dep completed. Prod Dep is pending."
+      "comment": "ÃÂ» UAT Dep completed. Prod Dep is pending."
     },
     {
       "id": 26,
@@ -349,7 +349,7 @@
       "dev2": "Santhiya",
       "ba": "",
       "eta": "18th Apr'26",
-      "comment": "Â» Waiting for CR number. PUT ON HOLD."
+      "comment": "ÃÂ» Waiting for CR number. PUT ON HOLD."
     },
     {
       "id": 28,
@@ -362,7 +362,7 @@
       "dev2": "",
       "ba": "",
       "eta": "15th Apr'26",
-      "comment": "Â» UAT Sign-off received on 15th May'26. Prod Dep pending."
+      "comment": "ÃÂ» UAT Sign-off received on 15th May'26. Prod Dep pending."
     },
     {
       "id": 29,
@@ -375,7 +375,7 @@
       "dev2": "",
       "ba": "",
       "eta": "15th Apr'26",
-      "comment": "Â» Awaiting for UAT Sign-off. Prod Dep Doc shared on 24th Apr'26."
+      "comment": "ÃÂ» Awaiting for UAT Sign-off. Prod Dep Doc shared on 24th Apr'26."
     }
   ],
   "attendance": [
